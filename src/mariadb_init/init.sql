@@ -9,7 +9,7 @@ create table if not exists user(
     surname varchar(255) not null,
     bio text,
     --image_url text,
-    password text not null,
+    password varchar(255) not null,
     user_points int default 0,
     created_at timestamp default CURRENT_TIMESTAMP
     --last_login_at timestamp
@@ -17,9 +17,9 @@ create table if not exists user(
 
 create table if not exists question(
     question_id int AUTO_INCREMENT primary key,
-    question_text text not null unique,
+    question_text varchar(500) not null,
     created_by_user_id int,
-    created_at timestamp CURRENT_TIMESTAMP,
+    created_at timestamp defaul CURRENT_TIMESTAMP,
     --answers_number int default 0,
     status ENUM('open','close') default 'open',
     foreign key(created_by_user_id) references user(user_id) on update cascade on delete set null
@@ -29,9 +29,9 @@ create table if not exists question(
 
 create table if not exists answer(
     answer_id int AUTO_INCREMENT primary key,
-    answer_text text not null unique,
+    answer_text text not null,
     answer_type ENUM('LLM','user'),
-    created_at timestamp CURRENT_TIMESTAMP
+    created_at timestamp default CURRENT_TIMESTAMP
     --is_culturally_specific_response boolean
 )
 
