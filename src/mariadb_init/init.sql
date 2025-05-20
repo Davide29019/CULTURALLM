@@ -62,7 +62,7 @@ create table if not exists user_answer_question(
     user_id int not null,
     answer_id int not null,
     question_id int not null,
-    answered_at timestamp default CURRENT_TIMESTAMP
+    answered_at timestamp default CURRENT_TIMESTAMP,
     primary key(user_id,question_id),
     foreign key(question_id,answer_id) references question_answer(question_id,answer_id) on delete cascade on update cascade,
     foreign key(user_id) references user(user_id) on delete cascade on update cascade
