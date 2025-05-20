@@ -19,8 +19,8 @@ create table if not exists question(
     question_id int AUTO_INCREMENT primary key,
     question_text varchar(500) not null,
     created_by_user_id int,
-    created_at timestamp defaul CURRENT_TIMESTAMP,
-    --answers_number int default 0,
+    created_at timestamp default CURRENT_TIMESTAMP,
+    --answers_number int default 0, si può fare con count *
     status ENUM('open','close') default 'open',
     foreign key(created_by_user_id) references user(user_id) on update cascade on delete set null
     --difficulty ENUM('hard','medium','easy'),
