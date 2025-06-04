@@ -101,6 +101,7 @@ create table if not exists lingua(
 
 create table if not exists question(
     question_id int AUTO_INCREMENT primary key,
+    question_tags text not null,
     question_text varchar(500) not null unique,
     created_by_user_id int,
     created_by_llm_id int,
@@ -116,7 +117,7 @@ create table if not exists question(
 
 create table if not exists answer(
     answer_id int AUTO_INCREMENT primary key,
-    tags text not null,
+    answer_tags text not null,
     answer_text text not null,
     created_at timestamp default CURRENT_TIMESTAMP
     --is_culturally_specific_response boolean
