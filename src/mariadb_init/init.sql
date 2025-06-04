@@ -186,14 +186,14 @@ create table if not exists user_answer_question(
 
 
 create table if not exists rating_llm_answer_question_user(
-    rating_id int AUTO_INCREMENT not null,
+    rating_id int AUTO_INCREMENT primary key,
     llm_id int not null,
     answer_id int not null,
     question_id int not null,
     user_id int not null,
-    primary key(rating_id,llm_id,answer_id,question_id,user_id),
+    unique(llm_id,answer_id,question_id,user_id),
     value int not null,
-    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade,
     foreign key(llm_id,question_id,answer_id) references llm_answer_question(llm_id,question_id,answer_id) on delete cascade on update cascade
 );
 
