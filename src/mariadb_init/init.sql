@@ -7,18 +7,26 @@ create table if not exists theme(
     name varchar(100) unique not null
 );
 
+
+create table if not exists avatar(
+    avatar_id int AUTO_INCREMENT primary key,
+    path text not null
+);
+
 create table if not exists user(
     user_id int AUTO_INCREMENT primary key,
     username varchar(255) unique not null,
     name varchar(255) not null,
     surname varchar(255) not null,
     bio text,
+    current_avatar_id int default null,
     password varchar(255) not null,
     user_points int default 0,
     --user_points_season int default 0,
     user_coins int default 0,
-    created_at timestamp default CURRENT_TIMESTAMP
-    last_login_at timestamp
+    created_at timestamp default CURRENT_TIMESTAMP,
+    last_login_at timestamp,
+    foreign key (current_avatar_id) references avatar(avatar_id)
 );
 
 
@@ -44,11 +52,6 @@ create table if not exists mission(
     foreign key(theme) references theme(theme_id) on delete cascade on update cascade
 );
 
-create table if not exists avatar(
-    avatar_id int AUTO_INCREMENT primary key,
-    path text not null
-);
-
 
 create table if not exists badge_user(
     badge_id int not null,
@@ -69,7 +72,6 @@ create table if not exists title_user(
 create table if not exists avatar_user(
     avatar_id int not null,
     user_id int not null,
-    active int default 0,
     primary key(avatar_id,user_id),
     foreign key(avatar_id) references avatar(avatar_id) on delete cascade on update cascade,
     foreign key(user_id) references user(user_id) on delete cascade on update cascade
@@ -141,7 +143,7 @@ create table if not exists report_question(
     question_id int not null,
     primary key(report_id, question_id),
     foreign key(question_id) references question(question_id) on delete cascade on update cascade,
-    foreign key(report_id) references report(report_id) on delete cascade on update cascade,
+    foreign key(report_id) references report(report_id) on delete cascade on update cascade
 );
 
 create table if not exists question_theme(
