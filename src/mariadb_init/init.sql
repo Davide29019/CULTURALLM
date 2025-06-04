@@ -8,9 +8,10 @@ create table if not exists user(
     name varchar(255) not null,
     surname varchar(255) not null,
     bio text,
-    --image_url text,
+    avatar text,
     password varchar(255) not null,
     user_points int default 0,
+    user_credits int default 0,
     created_at timestamp default CURRENT_TIMESTAMP
     --last_login_at timestamp
 );
