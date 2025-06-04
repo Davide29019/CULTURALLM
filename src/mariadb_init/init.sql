@@ -113,7 +113,28 @@ create table if not exists answer(
     answer_type ENUM('LLM','user'),
     created_at timestamp default CURRENT_TIMESTAMP
     --is_culturally_specific_response boolean
-)
+);
+
+create table if not exists report_type(
+    report_type_id int AUTO_INCREMENT primary key,
+    type varchar(255) not null
+);
+
+
+create table if not exists report(
+    report_id int AUTO_INCREMENT primary key,
+    description varchar(500) default null,
+    report_type_id int not null,
+    foreign key(report_type_id) references report_type(report_type_id) on delete cascade on update cascade
+);
+
+create table if not exists report_question(
+    report_id int not null,
+    question_id int not null,
+    primary key(report_id, question_id),
+    foreign key(question_id) references question(question_id) on delete cascade on update cascade,
+    foreign key(report_id) references report(report_id) on delete cascade on update cascade,
+);
 
 create table if not exists theme(
     theme_id int AUTO_INCREMENT primary key,
