@@ -21,9 +21,43 @@ create table if not exists mission(
     description text not null,
     reward_coins int not null,
     reward_points int not null,
-    value int not null
+    value int not null,
+    foreign key(theme) references theme(theme_id) on delete cascade on update cascade
 );
-    
+
+create table if not exists avatar(
+    avatar_id int AUTO_INCREMENT primary key,
+    path text not null
+);
+
+
+create table if not exists badge_user(
+    badge_id int not null,
+    user_id int not null,
+    primary key(badge_id,user_id),
+    foreign key(badge_id) references badge(badge_id) on delete cascade on update cascade,
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+);
+
+create table if not exists title_user(
+    title_id int not null,
+    user_id int not null,
+    primary key(title_id,user_id),
+    foreign key(title_id) references title(title_id) on delete cascade on update cascade,
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+);
+
+create table if not exists avatar_user(
+    avatar_id int not null,
+    user_id int not null,
+    active int default 0,
+    primary key(avatar_id,user_id),
+    foreign key(avatar_id) references avatar(avatar_id) on delete cascade on update cascade,
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+);
+
+
+
 
 
 
@@ -33,10 +67,9 @@ create table if not exists user(
     name varchar(255) not null,
     surname varchar(255) not null,
     bio text,
-    avatar text,
     password varchar(255) not null,
     user_points int default 0,
-    user_credits int default 0,
+    user_coins int default 0,
     created_at timestamp default CURRENT_TIMESTAMP
     --last_login_at timestamp
 );
