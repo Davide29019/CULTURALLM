@@ -2,6 +2,31 @@ drop database culturaLLM;
 create database if not exists culturaLLM;
 use culturaLLM;
 
+
+create table if not exists badge(
+    badge_id int AUTO_INCREMENT primary key,
+    path text not null
+);
+
+create table if not exists title(
+    title_id int AUTO_INCREMENT primary key,
+    name varchar(255) not null unique
+);
+
+create table if not exists mission(
+    mission_id int AUTO_INCREMENT primary key,
+    type ENUM('daily','weekly','objective'),
+    kind ENUM('answer','question'),        --indica su cosa va a contare il valore (es: rispondi a 10 domande -> kind=answer , crea 10 domande sul calcio -> kind=question theme=calcio)
+    theme int,
+    description text not null,
+    reward_coins int not null,
+    reward_points int not null,
+    value int not null
+);
+    
+
+
+
 create table if not exists user(
     user_id int AUTO_INCREMENT primary key,
     username varchar(255) unique not null,
