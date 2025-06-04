@@ -57,8 +57,22 @@ create table if not exists avatar_user(
 );
 
 
+create table if not exists mission_user(
+    mission_id int not null,
+    user_id int not null,
+    progress int default 0,
+    completed int default 0,
+    primary key(mission_id,user_id),
+    foreign key(mission_id) references mission(mission_id) on delete cascade on update cascade,
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+);
 
 
+create table if not exists llm(
+    llm_id int AUTO_INCREMENT primary key,
+    name varchar(255) not null,
+    llm_points int default 0
+);
 
 
 create table if not exists user(
@@ -69,9 +83,15 @@ create table if not exists user(
     bio text,
     password varchar(255) not null,
     user_points int default 0,
+    --user_points_season int default 0,
     user_coins int default 0,
     created_at timestamp default CURRENT_TIMESTAMP
-    --last_login_at timestamp
+    last_login_at timestamp
+);
+
+create table if not exists lingua(
+    lingua_id int AUTO_INCREMENT primary key,
+    name varchar(255)
 );
 
 create table if not exists question(
@@ -83,7 +103,7 @@ create table if not exists question(
     --answers_number int default 0, si può fare con count *
     status ENUM('open','close') default 'open',
     foreign key(created_by_user_id) references user(user_id) on update cascade on delete set null
-    --difficulty ENUM('hard','medium','easy'),
+    --difficulty ENUM('hard','medium','easy'),  può valutarla un LLM?
     --target_culture varchar(50) default 'italiana' tabella lingua?
 );
 
