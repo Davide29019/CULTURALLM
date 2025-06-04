@@ -116,6 +116,7 @@ create table if not exists question(
 
 create table if not exists answer(
     answer_id int AUTO_INCREMENT primary key,
+    tags text not null,
     answer_text text not null,
     created_at timestamp default CURRENT_TIMESTAMP
     --is_culturally_specific_response boolean
@@ -180,6 +181,17 @@ create table if not exists user_answer_question(
     foreign key(user_id) references user(user_id) on delete cascade on update cascade
 );
 
-create table if not exists rating(
-    rating_id int
+
+create table if not exists rating_llm_answer_question_user(
+    rating_id int AUTO_INCREMENT not null,
+    llm_id int not null,
+    answer_id int not null,
+    question_id int not null,
+    user_id int not null,
+    primary key(rating_id,llm_id,answer_id,question_id,user_id),
+    value int not null,
+    foreign key(user_id) references user(user_id) on delete cascade on update cascade
+    foreign key(llm_id,question_id,answer_id) references llm_answer_question(llm_id,question_id,answer_id) on delete cascade on update cascade
 );
+
+
