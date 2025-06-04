@@ -13,13 +13,17 @@ create table if not exists avatar(
     path text not null
 );
 
+insert into avatar(path) values(
+    "../images/assets/avatar/default-avatar-circle.jpg"
+);
+
 create table if not exists user(
     user_id int AUTO_INCREMENT primary key,
     username varchar(255) unique not null,
     name varchar(255) not null,
     surname varchar(255) not null,
     bio text,
-    current_avatar_id int default null,
+    current_avatar_id int default 1,
     password varchar(255) not null,
     user_points int default 0,
     --user_points_season int default 0,
