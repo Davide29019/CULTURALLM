@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        
+        body {
+            font-family: 'Inter', sans-serif; 
+        }
+        .gradient-text {
+        /*background: linear-gradient(to right, #a855f7, #7c3aed);*/ /*oppure al chiaro #ede9fe*/
+        background: linear-gradient(to right, #d8b4fe, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        }
+        .gradient-text-hover:hover {
+            /*background: linear-gradient(to right, #a855f7, #7c3aed);*/
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Aggiunta per un font più simile se Inter non è disponibile o per preferenza */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7', // Viola più chiaro per testi/logo (simile a violet-500)
+                            DEFAULT: '#9333EA', // Viola principale per bottoni (simile a purple-600)
+                            dark: '#7E22CE'    // Viola più scuro per hover (simile a purple-700)
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F', // Sfondo principale scurissimo
+                            900: '#1C1C1E', // Sfondo card
+                            800: '#2C2C2E', // Sfondo input
+                            700: '#3A3A3C', // Bordo input
+                            400: '#A0A0A0', // Testo secondario
+                            300: '#D1D5DB', // Testo etichette
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black min-h-screen flex flex-col items-center justify-center p-4 selection:bg-brand-purple selection:text-white">
+
+    <!-- Back to Home Link -->
+    <div class="absolute top-0 left-0 p-4 sm:p-6">
+        <a href="/" class="text-neutral-dark-400 hover:text-white flex items-center transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Home
+        </a>
+    </div>
+
+    <main class="flex flex-col items-center justify-center w-full">
+        <!-- Logo and Subtitle -->
+        <div class="text-center mb-8 md:mb-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold gradient-text">CULTURALLM</h1>
+            <p class="text-neutral-dark-400 mt-2 text-sm sm:text-base">Welcome back to your cultural journey</p>
+        </div>
+
+        <!-- Sign In Form Card -->
+        <div class="bg-black  p-6 sm:p-8 rounded-lg shadow-2xl w-full max-w-md border border-neutral-dark-800">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-center text-white mb-2">Sign In</h2>
+            <p class="text-center text-neutral-dark-400 mb-6 sm:mb-8 text-sm">Enter your credentials to access your account</p>
+
+            <!-- Placeholder per messaggi di errore dal backend -->
+            <!-- 
+            <div class="bg-red-500/20 text-red-400 p-3 rounded-md mb-4 text-sm">
+                Invalid credentials. Please try again.
+            </div>
+            -->
+
+            <form action="#" method="POST" class="space-y-6">
+                <!--  Sostituisci "#" con l'URL del tuo endpoint backend che gestirà il login. -->
+
+                <div>
+                    <label for="email_or_username" class="block text-sm font-medium text-neutral-dark-300 mb-1">Email or Username</label>
+                    <input type="text" name="email_or_username" id="email_or_username"
+                           placeholder="Enter your email or username"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-neutral-dark-300 mb-1">Password</label>
+                    <input type="password" name="password" id="password"
+                           placeholder="Enter your password"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                </div>
+
+                <div class="text-left">
+                    <a href="#" class="text-sm text-brand-purple-light hover:underline">Forgot password?</a>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-purple-500 hover:bg-brand-purple text-white font-semibold py-3 px-4 rounded-md
+                               transition-all duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:ring-offset-2 focus:ring-offset-neutral-dark-900">
+                    Sign In
+                </button>
+            </form>
+
+            <p class="text-center text-neutral-dark-400 mt-8 text-sm">
+                Don't have an account? <a href="#" class="text-brand-purple-light hover:underline font-medium">Sign up</a>
+            </p>
+        </div>
+    </main>
+
+</body>
+</html>

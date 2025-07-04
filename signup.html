@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-text-hover:hover {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-black min-h-screen flex flex-col items-center justify-center p-4 selection:bg-brand-purple selection:text-white">
+
+    <!-- Back to Home Link -->
+    <div class="absolute top-0 left-0 p-4 sm:p-6">
+        <a href="/" class="text-neutral-dark-400 hover:text-white flex items-center transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to Home
+        </a>
+    </div>
+
+    <main class="flex flex-col items-center justify-center w-full">
+        <!-- Logo and Subtitle -->
+        <div class="text-center mb-8 md:mb-10">
+            <h1 class="text-2xl sm:text-3xl font-extrabold gradient-text">CULTURALLM</h1>
+            <p class="text-neutral-dark-400 mt-2 text-sm sm:text-base">Start your cultural exploration journey</p>
+        </div>
+
+        <!-- Create Account Form Card -->
+        <div class="bg-black p-6 sm:p-8 rounded-lg shadow-2xl w-full max-w-md border border-neutral-dark-800">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-center text-white mb-2">Create Account</h2>
+            <p class="text-center text-neutral-dark-400 mb-6 sm:mb-8 text-sm">Join our global community of cultural enthusiasts</p>
+
+            <!-- Placeholder per messaggi di errore globali (es. da API) -->
+            <div id="globalError" class="bg-red-500/20 text-red-400 p-3 rounded-md mb-4 text-sm hidden">
+                <!-- Messaggio di errore qui -->
+            </div>
+
+
+            <form id="signupForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-neutral-dark-300 mb-1">Username</label>
+                    <input type="text" name="username" id="username"
+                           placeholder="Choose a unique username"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-neutral-dark-300 mb-1">Email</label>
+                    <input type="email" name="email" id="email"
+                           placeholder="Enter your email address"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-neutral-dark-300 mb-1">Password</label>
+                    <input type="password" name="password" id="password"
+                           placeholder="Create a strong password"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                </div>
+
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-neutral-dark-300 mb-1">Confirm Password</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword"
+                           placeholder="Confirm your password"
+                           class="w-full px-4 py-3 bg-black border border-neutral-dark-800 rounded-md text-neutral-dark-300
+                                focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple placeholder-neutral-dark-400/70 transition-colors"
+                           required>
+                    <p id="passwordError" class="text-red-400 text-xs mt-1 hidden">Passwords do not match.</p>
+                </div>
+
+                <button type="submit" id="submitButton"
+                        class="w-full bg-purple-500 hover:bg-brand-purple text-white font-semibold py-3 px-4 rounded-md
+                               transition-all duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:ring-offset-2 focus:ring-offset-black">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="text-center text-neutral-dark-400 mt-8 text-sm">
+                Already have an account? <a href="#" class="text-brand-purple-light hover:underline font-medium">Sign in</a>
+            </p>
+        </div>
+    </main>
+
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const globalError = document.getElementById('globalError');
+        const submitButton = document.getElementById('submitButton');
+
+        signupForm.addEventListener('submit', async function(event) {
+            event.preventDefault(); // Previene l'invio tradizionale del form
+
+            // Reset errori
+            passwordError.classList.add('hidden');
+            confirmPasswordInput.classList.remove('border-red-500', 'focus:border-red-500'); // Tailwind non ha border-red-500 in config di default
+            confirmPasswordInput.style.borderColor = ''; // Resetta stile inline se applicato
+            globalError.classList.add('hidden');
+            globalError.textContent = '';
+
+
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                passwordError.textContent = 'Passwords do not match.';
+                passwordError.classList.remove('hidden');
+                confirmPasswordInput.style.borderColor = '#F87171'; // red-400
+                confirmPasswordInput.focus();
+                return;
+            }
+
+            // Validazione minima (puoi espandere)
+            if (usernameInput.value.trim().length < 3) {
+                displayGlobalError("Username must be at least 3 characters long.");
+                usernameInput.focus();
+                return;
+            }
+            if (passwordInput.value.length < 6) {
+                displayGlobalError("Password must be at least 6 characters long.");
+                passwordInput.focus();
+                return;
+            }
+
+
+            const formData = new FormData(signupForm);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key !== 'confirmPassword') { // Non inviare confirmPassword al backend
+                    data[key] = value;
+                }
+            });
+
+            console.log('Dati del form pronti per essere inviati:', data);
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating Account...';
+            submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+
+
+            // Qui integrerai la chiamata al backend Python, ad esempio con fetch:
+            try {
+                /*
+                const response = await fetch('/api/register', { // Sostituisci con il tuo endpoint API
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Successo:', result);
+                    alert('Account creato con successo!'); // O reindirizza, mostra messaggio di successo
+                    signupForm.reset();
+                    // window.location.href = '/dashboard';
+                } else {
+                    const errorData = await response.json();
+                    console.error('Errore dal server:', response.status, errorData);
+                    displayGlobalError(errorData.message || `Error: ${response.statusText}`);
+                }
+                */
+
+                // SIMULAZIONE DI CHIAMATA AL BACKEND (rimuovi quando integri)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                const simulatedResponseOk = Math.random() > 0.3; // Simula successo/fallimento
+
+                if (simulatedResponseOk) {
+                    console.log('Successo (simulato): Account creato per', data.username);
+                    alert(`Account for ${data.username} created successfully! (Simulated)`);
+                    signupForm.reset();
+                } else {
+                    console.error('Errore dal server (simulato): Impossibile creare l\'account.');
+                    displayGlobalError('Failed to create account. Username or email might be taken. (Simulated)');
+                }
+                // FINE SIMULAZIONE
+
+            } catch (error) {
+                console.error('Errore durante l\'invio del form:', error);
+                displayGlobalError('A network error occurred. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create Account';
+                submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        });
+
+        function displayGlobalError(message) {
+            globalError.textContent = message;
+            globalError.classList.remove('hidden');
+        }
+
+        // Rimuovi il bordo rosso e messaggio di errore dagli input password quando l'utente inizia a digitare
+        [passwordInput, confirmPasswordInput].forEach(input => {
+            input.addEventListener('input', () => {
+                if (!passwordError.classList.contains('hidden')) {
+                    passwordError.classList.add('hidden');
+                    confirmPasswordInput.style.borderColor = ''; // Resetta
+                }
+                 if (!globalError.classList.contains('hidden')) {
+                    globalError.classList.add('hidden');
+                 }
+            });
+        });
+
+    </script>
+</body>
+</html>

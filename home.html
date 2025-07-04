@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /*background-color: #0F0F0F; /* neutral-dark-950 */
+
+            background-color: #000000; /* black */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #000; /* neutral-dark-900 */
+            border: 1px solid #2C2C2E; /* neutral-dark-800 */
+        }
+        .icon-muted {
+            color: #A0A0A0; /* neutral-dark-400 */
+        }
+        .badge-purple { background-color: rgba(168, 85, 247, 0.2); color: #c084fc; /* purple-400 */ } /*featured*/
+        .badge-green  { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; /* green-400 */ } /*missioni*/
+        .badge-yellow { background-color: rgba(234, 179, 8, 0.2); color: #facc15; /* yellow-400 */ } /*milestone community*/
+        .badge-blue   { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; /* blue-400 */ } /*other*/
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C1C1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A3A3C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A855F7;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px; /* Larghezza sottile */
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(120, 120, 120, 0.4); /* Colore della barra */
+            border-radius: 4px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent; /* Sfondo invisibile */
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                            200: '#E5E7EB',
+                            100: '#F3F4F6'
+                        }
+                    },
+                    maxWidth: { // Aggiungiamo screen-2xl se non già presente di default
+                        'screen-2xl': '1536px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body class="text-neutral-dark-300 selection:bg-brand-purple selection:text-white">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-neutral-dark-800">
+        <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-extrabold gradient-text">CULTURALLM</a>
+                </div>
+                <div class="flex-1 px-4 lg:px-12">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="search-outline" class="text-neutral-dark-400"></ion-icon>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full pl-10 pr-3 py-2.5 bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg
+                                    text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none
+                                    focus:ring-1 focus:ring-brand-purple focus:border-brand-purple sm:text-sm"
+                            placeholder="Search questions, topics, cultures...">
+                    </div>
+                </div>
+
+                <!--{/* Icone a destra per schermi grandi */}-->
+                <div class="hidden lg:flex items-center space-x-3 sm:space-x-4">
+                    <button title="Create a Question" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </button>
+                    <button title="Question Dashboard" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </button>
+                    <button title="Profile" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </button>
+                    <button title="Settings" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button title="Mission & Challenge" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                    </button>
+                    <button title="Notifications" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        <!-- <span class="absolute top-0.5 right-0.5 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500"></span> Esempio notifica -->
+                    </button>
+                    <button title="Shop" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                    </button>
+                    <button title="Message" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    </button>
+                    <div class="w-px h-6 bg-gray-500 opacity-50"></div>
+                    <button title="Log-out" class="p-1.5 rounded-full text-red-500 hover:text-white hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                    </button>
+                </div>
+
+                <!--{/* Pulsante Hamburger per schermi piccoli e Menu Dropdown */}-->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuButton" class="p-2 rounded-md text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-purple-light">
+                        <span class="sr-only">Open main menu</span>
+                        <ion-icon name="menu-outline" id="menuIconOpen" class="block h-6 w-6"></ion-icon>
+                        <ion-icon name="close-outline" id="menuIconClose" class="hidden h-6 w-6"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!--{/* Menu Dropdown Mobile - inizialmente nascosto */}-->
+            <div id="mobileMenu" class="hidden lg:hidden absolute right-4 mt-2 w-56 origin-top-right bg-neutral-dark-900 border border-neutral-dark-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobileMenuButton" tabindex="-1">
+                <div class="py-1" role="none">
+                    <a href="#" title="Create a Question" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create
+                    </a>
+                    <a href="#" title="Question Dashboard" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="#" title="Profile" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Profile
+                    </a>
+                    <a href="#" title="Settings" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Settings
+                    </a>
+                    <a href="#" title="Mission & Challenge" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        Missions
+                    </a>
+                    <a href="#" title="Notifications" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light relative" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        Notifications
+                        <!-- <span class="absolute top-1.5 right-3 block h-2 w-2 rounded-full bg-red-500"></span> Esempio notifica nel menu -->
+                    </a>
+                    <a href="#" title="Shop" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                        Shop
+                    </a>
+                    <a href="#" title="Message" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                        Messages
+                    </a>
+                    <div class="border-t border-neutral-dark-700 mx-2 my-1"></div>
+                    <a href="#" title="Log-out" class="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-neutral-dark-800 hover:text-red-400" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                        Log-out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8"> 
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+            <div class="lg:col-span-2 space-y-6 lg:space-y-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-neutral-dark-100">Welcome back to CULTURALLM</h1>
+                    <p class="text-neutral-dark-400 mt-1">Continue your journey of cultural discovery and knowledge sharing.</p>
+                </div>
+                <!-- home 1 per i 4 box -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="card p-5 rounded-xl flex items-start space-x-3 transform hover:scale-[1.02] transition-transform duration-300 ease-in-out">
+                        <div class="p-2 rounded-lg">
+                            <ion-icon name="trending-up-outline" class="text-2xl text-green-400"></ion-icon>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-neutral-dark-100" id="questionsThisWeek">2.4k</p>
+                            <p class="text-sm text-neutral-dark-400">Questions This Week</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 rounded-xl flex items-start space-x-3 transform hover:scale-[1.02] transition-transform duration-300 ease-in-out">
+                        <div class="p-2 rounded-lg">
+                            <ion-icon name="people-outline" class="text-2xl text-blue-400"></ion-icon>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-neutral-dark-100" id="activeMembers">85.2k</p>
+                            <p class="text-sm text-neutral-dark-400">Active Members</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 rounded-xl flex items-start space-x-3 transform hover:scale-[1.02] transition-transform duration-300 ease-in-out">
+                        <div class="p-2 rounded-lg">
+                            <ion-icon name="globe-outline" class="text-2xl text-purple-400"></ion-icon>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-neutral-dark-100" id="countriesRepresented">195</p>
+                            <p class="text-sm text-neutral-dark-400">Countries Represented</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 rounded-xl flex items-start space-x-3 transform hover:scale-[1.02] transition-transform duration-300 ease-in-out">
+                         <div class="p-2 rounded-lg">
+                            <ion-icon name="calendar-outline" class="text-2xl text-yellow-400"></ion-icon>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-neutral-dark-100" id="daysStreak">12</p>
+                            <p class="text-sm text-neutral-dark-400">Days Streak</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- home 2 per i temi della settimana, vedremo se farne 2,3,4?? poi cliccando su visualizza tutti i temi riportiamo alla dashboard domande -->
+                <div class="card p-6 rounded-xl">
+                    <div class="flex items-center space-x-3 mb-5">
+                        <ion-icon name="planet-outline" class="text-2xl text-brand-purple-light"></ion-icon>
+                        <div>
+                            <h2 class="text-xl font-semibold text-neutral-dark-100">Themes of the Week</h2>
+                            <p class="text-sm text-neutral-dark-400">Weekly focus topics and cultural challenges</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5" id="themesList">
+                        <div class="p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/50 transition-colors transform hover:scale-[1.02] transition-transform duration-300 ease-in-out" style="background: linear-gradient(145deg, rgba(147, 51, 234, 0.1), rgba(30,30,32,0.1) 90%);">
+                            <h3 class="font-semibold text-neutral-dark-100 mb-1">Eastern Philosophy</h3>
+                            <p class="text-sm text-neutral-dark-400 mb-3">Explore wisdom traditions from Asia and their modern applications</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-purple">Philosophy</span>
+                                <span class="text-xs text-neutral-dark-400">128 questions</span>
+                            </div>
+                        </div>
+                        <div class="p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/50 transition-colors transform hover:scale-[1.02] transition-transform duration-300 ease-in-out" style="background: linear-gradient(145deg, rgba(34, 197, 94, 0.1), rgba(30,30,32,0.1) 90%);">
+                            <h3 class="font-semibold text-neutral-dark-100 mb-1">Food Heritage</h3>
+                            <p class="text-sm text-neutral-dark-400 mb-3">Traditional recipes and their cultural significance</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-green">Food</span>
+                                <span class="text-xs text-neutral-dark-400">89 questions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full text-center py-2.5 px-4 rounded-lg bg-neutral-dark-800 hover:bg-brand-purple text-neutral-dark-300 hover:text-white font-medium text-sm transition-colors">
+                        Explore All Themes
+                    </button>
+                </div>
+
+                <!-- notifiche dalla community e creatori di cultura llm, per aggiornamenti -->
+                <div class="card p-6 rounded-xl">
+                    <div class="flex items-center space-x-3 mb-5">
+                        <ion-icon name="trending-up-outline" class="text-2xl text-brand-purple-light"></ion-icon>
+                        <div>
+                            <h2 class="text-xl font-semibold text-neutral-dark-100">Community Updates</h2>
+                            <p class="text-sm text-neutral-dark-400">Latest news and highlights from the CULTURALLM community</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4 mb-5 max-h-80 overflow-y-auto pr-1 custom-scroll" id="communityUpdatesList">
+                        <div class="p-4 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/30 transition-colors">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-medium text-neutral-dark-200">Weekly Cultural Spotlight: Japanese Minimalism</h3>
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-purple">Featured</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Explore the philosophy of 'Less is More' and its influence on modern design and lifestyle.</p>
+                            <div class="flex justify-between items-center text-xs text-neutral-dark-400">
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/30 transition-colors">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-medium text-neutral-dark-200">New Mission: Traditional Recipes Challenge</h3>
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-green">Mission</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Share and discover authentic family recipes from your cultural heritage.</p>
+                            <div class="flex justify-between items-center text-xs text-neutral-dark-400">
+                                <span>1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/30 transition-colors">
+                           <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-medium text-neutral-dark-200">Community Achievement: 10K Cultural Questions</h3>
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-yellow">Milestone</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">We've reached a milestone of 10,000 questions about cultures worldwide!</p>
+                            <div class="flex justify-between items-center text-xs text-neutral-dark-400">
+                                <span>3 days ago</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple/30 transition-colors">
+                           <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-medium text-neutral-dark-200">New Mission available</h3>
+                                <span class="text-xs px-2.5 py-1 rounded-full font-medium badge-green">Mission</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Create 10 Question about math</p>
+                            <div class="flex justify-between items-center text-xs text-neutral-dark-400">
+                                <span>1 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 space-y-6 lg:space-y-8">
+                <!-- classifica migliori utenti -->
+                <div class="card p-6 rounded-xl">
+                    <div class="flex items-center space-x-3 mb-5">
+                        <ion-icon name="ribbon-outline" class="text-2xl text-brand-purple-light"></ion-icon>
+                        <h2 class="text-xl font-semibold text-neutral-dark-100">Top Contributors</h2>
+                    </div>
+
+                    <!-- LISTA SCROLLABILE -->
+                    <ul class="space-y-4 max-h-80 overflow-y-auto pr-2 custom-scroll" id="topContributorsList">
+                        
+                        <!-- 1° posizione -->
+                        <li class="flex items-center space-x-3">
+                        <ion-icon name="trophy-outline" class="text-lg text-yellow-400 w-10 text-center"></ion-icon>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/100/A855F7/FFFFFF?text=AC" alt="Alex Chen">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Alex Chen <span class="text-xs font-normal text-yellow-400">(2840 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">Cultural Expert</p>
+                        </div>
+                        </li>
+
+                        <!-- 2° posizione -->
+                        <li class="flex items-center space-x-3">
+                        <ion-icon name="medal-outline" class="text-lg text-neutral-dark-400 w-10 text-center"></ion-icon>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/100/9333EA/FFFFFF?text=MR" alt="Maria Rodriguez">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Maria Rodriguez <span class="text-xs font-normal text-neutral-dark-400">(2650 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">BIG</p>
+                        </div>
+                        </li>
+
+                        <!-- 3° posizione -->
+                        <li class="flex items-center space-x-3">
+                        <ion-icon name="star-outline" class="text-lg text-orange-400 w-10 text-center"></ion-icon>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/100/7E22CE/FFFFFF?text=KA" alt="Kwame Asante">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Kwame Asante <span class="text-xs font-normal text-neutral-dark-400">(2380 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">Ex Community Leader</p>
+                        </div>
+                        </li>
+
+                        <!-- 4° posizione -->
+                        <li class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-neutral-dark-400 w-10 text-center">#4</span>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/80/A0A0A0/FFFFFF?text=YT" alt="Yuki Tanaka">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Yuki Tanaka <span class="text-xs font-normal text-neutral-dark-400">(2120 pts)</span>
+                            </h4>
+                            <p class="text-xs text-blue-400">Rising Star</p>
+                        </div>
+                        </li>
+
+                        <!-- 5° posizione -->
+                        <li class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-neutral-dark-400 w-10 text-center">#5</span>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/80/A0A0A0/FFFFFF?text=EP" alt="Elena Popov">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Elena Popov <span class="text-xs font-normal text-neutral-dark-400">(1980 pts)</span>
+                            </h4>
+                            <p class="text-xs text-green-400">Helpful</p>
+                        </div>
+                        </li>
+
+                        <!-- altri rank -->
+                        <li class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-neutral-dark-400 w-10 text-center">#6</span>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/80/666/FFF?text=JD" alt="Jane Doe">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Jane Doe <span class="text-xs font-normal text-neutral-dark-400">(1870 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">Active Member</p>
+                        </div>
+                        </li>
+                        
+                        <!-- Aggiungi quanti rank vuoi io direi massimo 10 da far vedere (in scrollata) -->
+
+                        <!-- altri rank -->
+                        <li class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-neutral-dark-400 w-10 text-center">#7</span>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/80/666/FFF?text=JD" alt="lock">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            Lock <span class="text-xs font-normal text-neutral-dark-400">(1800 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">Member</p>
+                        </div>
+                        </li>
+                    </ul>
+                    <!-- Linea Divisoria -->
+                    <hr class="border-t border-neutral-dark-700 my-4">
+                    <!-- qui mettreremmo il rankinfk dell'utente che osserva -->
+                     <div class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-neutral-dark-400 w-10 text-center">#1546</span>
+                        <img class="w-8 h-8 rounded-full object-cover" src="https://via.placeholder.com/80/666/FFF?text=JD" alt="You">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">
+                            You <span class="text-xs font-normal text-neutral-dark-400">(140 pts)</span>
+                            </h4>
+                            <p class="text-xs text-purple-400">Member</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- classifica domande con piu risposte cioe le virali -->
+                <div class="card p-6 rounded-xl">
+                    <div class="flex items-center space-x-3 mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flame-icon lucide-flame"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                        <h2 class="text-xl font-semibold text-neutral-dark-100">Trending Questions</h2>
+                    </div>
+                    <ul class="space-y-4 max-h-80 overflow-y-auto pr-2 custom-scroll" id="trendingQuestionsList">
+                        <li class="flex items-start space-x-3">
+                            <ion-icon name="chatbubbles-outline" class="text-xl text-yellow-400 mt-1 flex-shrink-0"></ion-icon>
+                            <div>
+                                <a href="#" class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">Traditional Japanese Tea Ceremony Origins</a>
+                                <p class="text-xs text-neutral-dark-400 mt-0.5">342 likes · 28 answers</p>
+                                <div class="mt-1.5 space-x-1.5">
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Japan</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Traditions</span>
+                                </div>
+                            </div>
+                        </li>
+                         <li class="flex items-start space-x-3">
+                            <ion-icon name="chatbubbles-outline" class="text-xl text-neutral-dark-400 mt-1 flex-shrink-0"></ion-icon>
+                            <div>
+                                <a href="#" class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">Impact of Colonialism on African Art</a>
+                                <p class="text-xs text-neutral-dark-400 mt-0.5">298 likes · 45 answers</p>
+                                <div class="mt-1.5 space-x-1.5">
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Africa</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">History</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                             <ion-icon name="chatbubbles-outline" class="text-xl text-orange-400 mt-1 flex-shrink-0"></ion-icon>
+                             <div>
+                                <a href="#" class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">Nordic Folk Music Instruments</a>
+                                <p class="text-xs text-neutral-dark-400 mt-0.5">267 likes · 19 answers</p>
+                                <div class="mt-1.5 space-x-1.5">
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Nordic</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Music</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-sm font-medium text-neutral-dark-400 w-6 text-center mt-1 flex-shrink-0">#4</span>
+                            <div>
+                                <a href="#" class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">Mexican Day of the Dead Celebrations</a>
+                                <p class="text-xs text-neutral-dark-400 mt-0.5">234 likes · 33 answers</p>
+                                <div class="mt-1.5 space-x-1.5">
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Mexico</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Festivals</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                             <span class="text-sm font-medium text-neutral-dark-400 w-6 text-center mt-1 flex-shrink-0">#5</span>
+                            <div>
+                                <a href="#" class="text-sm font-medium text-neutral-dark-200 hover:text-brand-purple-light transition-colors">Indian Classical Dance Forms</a>
+                                <p class="text-xs text-neutral-dark-400 mt-0.5">201 likes · 22 answers</p>
+                                <div class="mt-1.5 space-x-1.5">
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">India</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-neutral-dark-700 text-neutral-dark-300">Dance</span>
+                                </div>
+                            </div>
+                        </li>
+                        <!----------->
+                    </ul>
+                </div>
+            </div>
+            <!-- home azioni veloci-->
+            <div class="lg:col-span-3 card p-6 rounded-xl mt-6 lg:mt-8">
+                <div>
+                    <h2 class="text-xl font-semibold text-neutral-dark-100">Quick Actions</h2>
+                    <p class="text-sm text-neutral-dark-400 mb-6"> 
+                        Jump into cultural exploration
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                        
+                        <!-- Azione 1: Ask a Question -->
+                        <a href="#" 
+                        class="block p-4 sm:p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple hover:bg-neutral-dark-800/40 transition-all duration-200 ease-in-out group transform hover:scale-[1.02]">
+                            <div class="flex flex-col h-full items-center">
+                                <div class="flex items-center mb-2">
+                                    <ion-icon name="help-circle-outline" class="text-xl text-brand-purple-light mr-2 group-hover:text-brand-purple transition-colors"></ion-icon>
+                                    <h3 class="font-semibold text-neutral-dark-100">Ask a Question</h3>
+                                </div>
+                                <p class="text-sm text-neutral-dark-400">Share your curiosity and get answers.</p>
+                            </div>
+                        </a>
+
+                        <!-- Azione 2: Browse Questions -->
+                        <a href="#"
+                        class="block p-4 sm:p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple hover:bg-neutral-dark-800/40 transition-all duration-200 ease-in-out group transform hover:scale-[1.02]">
+                            <div class="flex flex-col h-full items-center">
+                                <div class="flex items-center mb-2">
+                                    <ion-icon name="search-outline" class="text-xl text-brand-purple-light mr-2 group-hover:text-brand-purple transition-colors"></ion-icon>
+                                    <h3 class="font-semibold text-neutral-dark-100">Browse Questions</h3>
+                                </div>
+                                <p class="text-sm text-neutral-dark-400">Discover new topics and insights.</p>
+                            </div>
+                        </a>
+
+                        <!-- Azione 3: View Missions -->
+                        <a href="#"
+                        class="block p-4 sm:p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple hover:bg-neutral-dark-800/40 transition-all duration-200 ease-in-out group transform hover:scale-[1.02]">
+                            <div class="flex flex-col h-full items-center">
+                                <div class="flex items-center mb-2">
+                                    <ion-icon name="flag-outline" class="text-xl text-brand-purple-light mr-2 group-hover:text-brand-purple transition-colors"></ion-icon>
+                                    <h3 class="font-semibold text-neutral-dark-100">View Missions</h3>
+                                </div>
+                                <p class="text-sm text-neutral-dark-400">Participate and earn rewards.</p>
+                            </div>
+                        </a>
+
+                        <!-- Azione 4: Go to Profile -->
+                        <a href="#"
+                        class="block p-4 sm:p-5 rounded-lg border border-neutral-dark-700/70 hover:border-brand-purple hover:bg-neutral-dark-800/40 transition-all duration-200 ease-in-out group transform hover:scale-[1.02]">
+                            <div class="flex flex-col h-full items-center">
+                                <div class="flex items-center mb-2">
+                                    <ion-icon name="person-circle-outline" class="text-xl text-brand-purple-light mr-2 group-hover:text-brand-purple transition-colors"></ion-icon>
+                                    <h3 class="font-semibold text-neutral-dark-100">Go to Profile</h3>
+                                </div>
+                                <p class="text-sm text-neutral-dark-400">Review your activity and stats.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-8 border-t border-neutral-dark-800 mt-8">
+        <p class="text-sm text-neutral-dark-400">© <span id="currentYear"></span> CULTURALLM. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+
+            if (mobileMenuButton && mobileMenu && menuIconOpen && menuIconClose) {
+                mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+
+                // Opzionale: Chiudi il menu se si clicca fuori
+                document.addEventListener('click', (event) => {
+                    const isClickInsideMenu = mobileMenu.contains(event.target);
+                    const isClickOnButton = mobileMenuButton.contains(event.target);
+
+                    if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
