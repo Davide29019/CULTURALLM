@@ -387,7 +387,7 @@
                 hiddenInputId: 'selected-llm-hidden-input'
             });
 
-            // Gestione dell'invio del primo form
+            // Gestione dell'invio del primo form (Non serve ma aggiunta fa chat)
             const questionForm = document.getElementById('question-form');
             if (questionForm) {
                 questionForm.addEventListener('submit', function(event) {
@@ -409,9 +409,6 @@
                         llm: selectedLlm
                     };
 
-                    console.log("Manual Question Form data ready to be sent to the Python backend:");
-                    console.log(JSON.stringify(data, null, 2));
-                    alert('Manual Question Form data has been logged to the console (Press F12). This is ready for backend integration!');
                 });
             }
 
@@ -435,7 +432,7 @@
                 hiddenInputId: 'selected-llm-hidden-input-generate'
             });
 
-            // Gestione dell'invio del secondo form
+            // Gestione dell'invio del secondo form (Non serve ma aggiunta fa chat)
             const generateForm = document.getElementById('generate-question-form');
             if (generateForm) {
                 generateForm.addEventListener('submit', function(event) {
@@ -455,9 +452,6 @@
                         llm: selectedLlm
                     };
 
-                    console.log("Generate Question Form data ready to be sent to the Python backend:");
-                    console.log(JSON.stringify(data, null, 2));
-                    alert('Generate Question Form data has been logged to the console (Press F12). This is ready for backend integration!');
                 });
             }
         });
