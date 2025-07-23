@@ -641,21 +641,15 @@
 
             // --- Funzioni di Gestione ---
 
-            // --- NUOVA FUNZIONE: Carica i dati iniziali dal DOM ---
             function loadInitialDataFromDOM() {
-                // Legge i dati direttamente dai campi del form, che sono stati pre-compilati da Jinja.
-                // Questo è più robusto perché i campi input hanno sempre un valore definito.
                 profileData = {
                     firstName: document.getElementById('first-name').value.trim(),
                     lastName: document.getElementById('last-name').value.trim(),
                     username: document.getElementById('username').value.trim(),
-                    // CORREZIONE 1: Usiamo .trim() per rimuovere spaziature indesiderate dalla bio.
                     bio: document.getElementById('bio').value.trim(),
                     location: document.getElementById('location').value.trim(),
                     website: document.getElementById('website').value.trim(),
                     birthdate: document.getElementById('birthdate').value.trim(),
-                    // CORREZIONE 2: Leggiamo l'URL dell'immagine dall'anteprima nel form di modifica,
-                    // che dovrebbe essere stato popolato correttamente dal server al caricamento della pagina.
                     profilePicUrl: document.getElementById('profile-pic-edit-preview').src, 
                 };
                 console.log("Dati iniziali caricati dal DOM:", profileData);
@@ -731,7 +725,6 @@
 
             // Salva le modifiche dal form nello stato `profileData`
             function saveProfileChanges() {
-                // CORREZIONE 3: Usiamo .trim() su tutti i campi di testo per pulirli
                 const newFirstName = document.getElementById('first-name').value.trim();
                 const newLastName = document.getElementById('last-name').value.trim();
                 const newUsername = document.getElementById('username').value.trim();
