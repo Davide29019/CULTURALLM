@@ -219,36 +219,20 @@
                 </p>
                 <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-dark-400">
                     <div id="profile-location-display" class="flex items-center gap-2">
-                        <ion-icon name="location-outline">
-
-                        </ion-icon>
-                        <span>
-                           
-                        </span>
+                        <ion-icon name="location-outline"></ion-icon>
+                        <span></span>
                     </div>
                     <div id="profile-birthdate-display" class="flex items-center gap-2">
-                        <ion-icon name="calendar-outline">
-
-                        </ion-icon>
-                        <span>
-                         
-                        </span>
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span> </span>
                     </div>
                     <div id="profile-joined-display" class="flex items-center gap-2">
-                        <ion-icon name="time-outline">
-
-                        </ion-icon>
-                        <span>
-                            20 July 2025
-                        </span>
+                        <ion-icon name="time-outline"></ion-icon>
+                        <span>20 July 2025</span>
                     </div>
                     <div id="profile-website-display" class="flex items-center gap-2">
-                        <ion-icon name="globe-outline">
-
-                        </ion-icon>
-                        <a href="#" class="hover:text-brand-purple-light">
-              
-                        </a>
+                        <ion-icon name="globe-outline"></ion-icon>
+                        <a href="#" class="hover:text-brand-purple-light"></a>
                     </div>
                 </div>
             </div>
@@ -579,9 +563,7 @@
                         </div>
                         <div class="md:col-span-2"> 
                             <label for="bio" class="block text-sm font-medium text-neutral-dark-300 mb-1">Bio</label> 
-                            <textarea id="bio" rows="4" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
-                                Ciao sno davide, uno strudente di ingegneria e ho 22 anni studio in Sapienza e vivo a ROma
-                            </textarea>
+                            <textarea id="bio" rows="4" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">Ciao sno davide, uno strudente di ingegneria e ho 22 anni studio in Sapienza e vivo a ROma</textarea>
                         </div>
                     </div>
                 </div>
@@ -664,17 +646,17 @@
                 // Legge i dati direttamente dai campi del form, che sono stati pre-compilati da Jinja.
                 // Questo è più robusto perché i campi input hanno sempre un valore definito.
                 profileData = {
-                    firstName: document.getElementById('first-name').value,
-                    lastName: document.getElementById('last-name').value,
-                    username: document.getElementById('username').value,
-                    bio: document.getElementById('bio').value,
-                    location: document.getElementById('location').value,
-                    website: document.getElementById('website').value,
-                    birthdate: document.getElementById('birthdate').value,
-                    // Usiamo il 'data-attribute' per l'URL originale dell'immagine
-                    profilePicUrl: document.getElementById('profile-pic-display').getAttribute('data-initial-src') || defaultProfilePicUrl,
-                    // Prendiamo la data di join direttamente dall'elemento, per completezza
-                    joined: document.getElementById('profile-joined-display')?.querySelector('span')?.innerText.replace('Joined ', '') || ''
+                    firstName: document.getElementById('first-name').value.trim(),
+                    lastName: document.getElementById('last-name').value.trim(),
+                    username: document.getElementById('username').value.trim(),
+                    // CORREZIONE 1: Usiamo .trim() per rimuovere spaziature indesiderate dalla bio.
+                    bio: document.getElementById('bio').value.trim(),
+                    location: document.getElementById('location').value.trim(),
+                    website: document.getElementById('website').value.trim(),
+                    birthdate: document.getElementById('birthdate').value.trim(),
+                    // CORREZIONE 2: Leggiamo l'URL dell'immagine dall'anteprima nel form di modifica,
+                    // che dovrebbe essere stato popolato correttamente dal server al caricamento della pagina.
+                    profilePicUrl: document.getElementById('profile-pic-edit-preview').src, 
                 };
                 console.log("Dati iniziali caricati dal DOM:", profileData);
             }
@@ -685,7 +667,6 @@
                 document.getElementById('profile-username-display').innerText = `@${profileData.username}`;
                 document.getElementById('profile-pic-display').src = profileData.profilePicUrl;
                 
-                // La logica per nascondere/mostrare gli elementi rimane qui
                 const bioDisplay = document.getElementById('profile-bio-display');
                 bioDisplay.innerText = profileData.bio;
                 bioDisplay.style.display = profileData.bio ? 'block' : 'none';
@@ -694,7 +675,7 @@
                 if (profileData.location) {
                     locationContainer.style.display = 'flex';
                     locationContainer.querySelector('span').innerText = profileData.location;
-                } else if (locationContainer) { 
+                } else { 
                     locationContainer.style.display = 'none';
                 }
 
@@ -702,7 +683,7 @@
                 if (profileData.birthdate) {
                     birthdateContainer.style.display = 'flex';
                     birthdateContainer.querySelector('span').innerText = `Born ${profileData.birthdate}`;
-                } else if (birthdateContainer) {
+                } else {
                     birthdateContainer.style.display = 'none';
                 }
 
@@ -710,9 +691,15 @@
                 if (profileData.website) {
                     websiteContainer.style.display = 'flex';
                     const websiteLink = websiteContainer.querySelector('a');
-                    websiteLink.href = profileData.website;
+                    // Assicuriamoci che l'URL sia valido per il link
+                    let href = profileData.website;
+                    if (!/^(https?:\/\/)/i.test(href)) {
+                        href = 'https://' + href;
+                    }
+                    websiteLink.href = href;
+                    // Mostriamo una versione pulita del link
                     websiteLink.innerText = profileData.website.replace(/^(https?:\/\/)/, '');
-                } else if (websiteContainer) {
+                } else {
                     websiteContainer.style.display = 'none';
                 }
             }
@@ -736,34 +723,37 @@
             }
 
             function showEditProfileView() {
+                // Prima di mostrare il form, assicuriamoci che sia sincronizzato con lo stato attuale
+                populateEditForm();
                 profileView.classList.add('hidden');
                 editProfileView.classList.remove('hidden');
             }
 
             // Salva le modifiche dal form nello stato `profileData`
             function saveProfileChanges() {
-                // 1. Legge i nuovi dati dal form
-                const newFirstName = document.getElementById('first-name').value;
-                const newLastName = document.getElementById('last-name').value;
-                let websiteInput = document.getElementById('website').value.trim();
-                if (websiteInput && !/^(https?:\/\/)/i.test(websiteInput)) {
-                    websiteInput = 'https://' + websiteInput;
-                }
-
-                // 2. Aggiorna l'oggetto di stato 'profileData' (il nostro backup si aggiorna)
+                // CORREZIONE 3: Usiamo .trim() su tutti i campi di testo per pulirli
+                const newFirstName = document.getElementById('first-name').value.trim();
+                const newLastName = document.getElementById('last-name').value.trim();
+                const newUsername = document.getElementById('username').value.trim();
+                const newBio = document.getElementById('bio').value.trim();
+                const newLocation = document.getElementById('location').value.trim();
+                let newWebsite = document.getElementById('website').value.trim();
+                const newBirthdate = document.getElementById('birthdate').value.trim();
+                
+                // Aggiorna lo stato in `profileData`
                 profileData.firstName = newFirstName;
                 profileData.lastName = newLastName;
-                profileData.username = document.getElementById('username').value;
-                profileData.bio = document.getElementById('bio').value;
-                profileData.location = document.getElementById('location').value;
-                profileData.website = websiteInput;
-                profileData.birthdate = document.getElementById('birthdate').value;
+                profileData.username = newUsername;
+                profileData.bio = newBio;
+                profileData.location = newLocation;
+                profileData.website = newWebsite;
+                profileData.birthdate = newBirthdate;
+                // L'URL della foto viene preso direttamente dall'anteprima, che è stata aggiornata dal cropper o dal revert
                 profileData.profilePicUrl = document.getElementById('profile-pic-edit-preview').src;
 
-                // 3. Aggiorna la vista del profilo con i nuovi dati
+                // Aggiorna la vista del profilo con i nuovi dati salvati
                 updateProfileDisplay();
                 
-                // 4. Mostra la vista del profilo
                 showProfileView();
             }
 
@@ -775,7 +765,6 @@
             backToProfileBtn.addEventListener('click', showProfileView);
 
             cancelEditBtn.addEventListener('click', () => {
-                populateEditForm(); // Ripristina i campi del form allo stato prima delle modifiche
                 showProfileView();
             });
 
