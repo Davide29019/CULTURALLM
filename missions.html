@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask a Cultural Question - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* black */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #000; /* Sfondo nero per le card */
+            border: 1px solid #2C2C2E; /* neutral-dark-800 */
+        }
+        .icon-muted {
+            color: #A0A0A0; /* neutral-dark-400 */
+        }
+        .badge-purple { background-color: rgba(168, 85, 247, 0.2); color: #c084fc; }
+        .badge-green  { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .badge-yellow { background-color: rgba(234, 179, 8, 0.2); color: #facc15; }
+        .badge-blue   { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C1C1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A3A3C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A855F7;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                            200: '#E5E7EB',
+                            100: '#F3F4F6'
+                        }
+                    },
+                    maxWidth: {
+                        'screen-2xl': '1536px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body class="text-neutral-dark-300 selection:bg-brand-purple selection:text-white">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-neutral-dark-800">
+        <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-extrabold gradient-text">CULTURALLM</a>
+                </div>
+                <div class="flex-1 px-4 lg:px-12">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="search-outline" class="text-neutral-dark-400"></ion-icon>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full pl-10 pr-3 py-2.5 bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg
+                                    text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none
+                                    focus:ring-1 focus:ring-brand-purple focus:border-brand-purple sm:text-sm"
+                            placeholder="Search questions, topics, cultures...">
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center space-x-3 sm:space-x-4">
+                    <button title="Create a Question" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </button>
+                    <button title="Question Dashboard" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </button>
+                    <button title="Profile" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </button>
+                    <button title="Settings" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button title="Mission & Challenge" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                    </button>
+                    <button title="Notifications" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                    </button>
+                    <button title="Shop" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                    </button>
+                    <button title="Message" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    </button>
+                    <div class="w-px h-6 bg-gray-500 opacity-50"></div>
+                    <button title="Log-out" class="p-1.5 rounded-full text-red-500 hover:text-white hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                    </button>
+                </div>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuButton" class="p-2 rounded-md text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-purple-light">
+                        <span class="sr-only">Open main menu</span>
+                        <ion-icon name="menu-outline" id="menuIconOpen" class="block h-6 w-6"></ion-icon>
+                        <ion-icon name="close-outline" id="menuIconClose" class="hidden h-6 w-6"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden lg:hidden absolute right-4 mt-2 w-56 origin-top-right bg-neutral-dark-900 border border-neutral-dark-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobileMenuButton" tabindex="-1">
+                <div class="py-1" role="none">
+                    <!-- Link del menu mobile... -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========= INIZIO CONTENUTO PRINCIPALE DELLA PAGINA ========= -->
+    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        
+        <!-- Intestazione Pagina -->
+        <div class="mb-8">
+            <h1 class="text-3xl lg:text-4xl font-bold text-neutral-dark-100">Missions & Challenges</h1>
+            <p class="mt-2 text-lg text-neutral-dark-400">Complete missions to earn points, coins, and exclusive badges.</p>
+        </div>
+
+        <!-- Statistiche Utente -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
+            <!-- Stat Card: Completed -->
+            <div class="card p-4 flex flex-col items-center justify-center text-center rounded-lg">
+                <ion-icon name="shield-checkmark-outline" class="text-3xl text-purple-400 mb-2"></ion-icon>
+                <span class="text-3xl font-bold text-white">23</span>
+                <span class="text-sm text-neutral-dark-400">Completed</span>
+            </div>
+            <!-- Stat Card: Active -->
+            <div class="card p-4 flex flex-col items-center justify-center text-center rounded-lg">
+                <ion-icon name="time-outline" class="text-3xl text-yellow-400 mb-2"></ion-icon>
+                <span class="text-3xl font-bold text-white">5</span>
+                <span class="text-sm text-neutral-dark-400">Active</span>
+            </div>
+            <!-- Stat Card: Badges Earned -->
+            <div class="card p-4 flex flex-col items-center justify-center text-center rounded-lg">
+                <ion-icon name="trophy-outline" class="text-3xl text-orange-400 mb-2"></ion-icon>
+                <span class="text-3xl font-bold text-white">12</span>
+                <span class="text-sm text-neutral-dark-400">Badges Earned</span>
+            </div>
+            <!-- Stat Card: Total Points -->
+            <div class="card p-4 flex flex-col items-center justify-center text-center rounded-lg">
+                <ion-icon name="star-outline" class="text-3xl text-fuchsia-400 mb-2"></ion-icon>
+                <span class="text-3xl font-bold text-white">2,847</span>
+                <span class="text-sm text-neutral-dark-400">Total Points</span>
+            </div>
+        </div>
+
+        <!-- Navigazione a Schede (Tabs) -->
+        <div id="missions-tabs" class="border-b border-neutral-dark-800 mb-8">
+            <nav class="grid grid-cols-3" aria-label="Tabs">
+                <button data-tab-target="#daily" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-brand-purple text-white text-center">Daily Missions</button>
+                <button data-tab-target="#weekly" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral-dark-400 hover:text-white hover:border-neutral-dark-700 text-center">Weekly Challenges</button>
+                <button data-tab-target="#general" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral-dark-400 hover:text-white hover:border-neutral-dark-700 text-center">General Missions</button>
+            </nav>
+        </div>
+
+        <!-- Contenuto delle Schede -->
+        <div>
+
+            <!-- Pannello: Daily Missions -->
+            <div id="daily" class="tab-content">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Daily Mission Card 1 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Your Daily Question</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Create a Question</p>
+                             <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">0/1</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="alarm-outline"></ion-icon>
+                                    <span>Resets in 14 hours</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">10 Points + 5 Coins</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pannello: Weekly Challenges -->
+            <div id="weekly" class="tab-content hidden">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Weekly Challenge Card 1 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Weekend Cultural Deep Dive</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Spend 2 hours exploring Japanese cultural traditions.</p>
+                             <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">45 / 120 minutes</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 37.5%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>4 days left</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">250 Points + Culture Scholar Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                     <!-- Weekly Challenge Card 2 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Foodie Explorer</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Answer 3 questions about traditional recipes.</p>
+                             <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">1/3</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 33.3%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>4 days left</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">180 Points + Food Expert Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                    <!-- Esempio Mission Card 3 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Answer Champion</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Provide helpful answers to 10 community questions.</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">8/10</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>5 days left</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">200 Points + 50 Coins</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                    <!-- Esempio Mission Card 4 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Global Explorer</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Engage with questions from 8 different countries.</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">5/8</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 62.5%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>1 week left</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">300 Points + World Traveler Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                    <!-- Completed Mission Card 2 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg opacity-70">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                                    <ion-icon name="checkmark-circle" class="text-green-400"></ion-icon>
+                                    Community Helper
+                                </h3>
+                                <span class="badge badge-gray">Completed</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Receive 25 upvotes on your Question.</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">25/25</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>Completed 1 week ago</span>
+                                </div>
+                                <span class="font-semibold text-green-400">200 Points + Helper Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-neutral-dark-700 cursor-not-allowed rounded-lg">Mission Complete</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pannello: General Missions -->
+            <div id="general" class="tab-content hidden">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- General Mission Card 1 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Profile Perfection</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Complete your user profile by adding a bio and profile picture.</p>
+                             <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">1/2</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="person-circle-outline"></ion-icon>
+                                    <span>No time limit</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">50 Points</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                    <!-- Esempio Mission Card -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg hover:border-brand-purple/50 transition-colors duration-300">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white">Cultural Question Master</h3>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Ask 5 thoughtful questions about different cultures.</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">3/5</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-brand-purple h-2 rounded-full" style="width: 60%;"></div> <!-- per fare la barra che avanza -->
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="person-circle-outline"></ion-icon>
+                                    <span>No time limit</span>
+                                </div>
+                                <span class="font-semibold text-purple-400">150 Points + Explorer Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-brand-purple hover:bg-brand-purple-light focus:outline-none rounded-lg transition-colors">Continue Mission</button>
+                    </div>
+                    <!-- Completed Mission Card 1 -->
+                    <div class="card flex flex-col justify-between p-6 rounded-lg opacity-70">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                                    <ion-icon name="checkmark-circle" class="text-green-400"></ion-icon>
+                                    First Steps
+                                </h3>
+                                <span class="badge badge-gray">Completed</span>
+                            </div>
+                            <p class="text-sm text-neutral-dark-400 mb-4">Complete your profile and ask your first question.</p>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-1">
+                                    <span>Progress</span>
+                                    <span class="font-medium text-neutral-dark-200">2/2</span>
+                                </div>
+                                <div class="w-full bg-neutral-dark-800 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center text-sm text-neutral-dark-400 mb-6">
+                                <div class="flex items-center gap-2">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                    <span>Completed 2 days ago</span>
+                                </div>
+                                <span class="font-semibold text-green-400">100 Points + Welcome Badge</span>
+                            </div>
+                        </div>
+                        <button class="w-full py-2.5 px-5 text-sm font-medium text-white bg-neutral-dark-700 cursor-not-allowed rounded-lg">Mission Complete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- ========= FINE CONTENUTO PRINCIPALE DELLA PAGINA ========= -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione Menu Mobile (dallo script di base)
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+            }
+
+            // --- GESTIONE TAB MISSIONI ---
+            const tabsContainer = document.getElementById('missions-tabs');
+            const tabButtons = tabsContainer.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.tabTarget; // es. "#active"
+                    const targetContent = document.querySelector(targetId);
+
+                    // Gestione stile bottoni
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-brand-purple', 'text-white');
+                        btn.classList.add('border-transparent', 'text-neutral-dark-400', 'hover:text-white', 'hover:border-neutral-dark-700');
+                    });
+                    button.classList.add('border-brand-purple', 'text-white');
+                    button.classList.remove('border-transparent', 'text-neutral-dark-400');
+
+                    // Gestione visibilità contenuto
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    if (targetContent) {
+                        targetContent.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
