@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* black */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #0F0F0F; /* Un po' più chiaro del nero per distinguersi */
+            border: 1px solid #2C2C2E; /* neutral-dark-800 */
+        }
+        
+        /* Stili per gli interruttori (Toggle Switch) */
+        .toggle-switch {
+            position: relative;
+            display: inline-flex;
+            height: 1.5rem; /* 24px */
+            width: 2.75rem; /* 44px */
+            flex-shrink: 0;
+            cursor: pointer;
+            border-radius: 9999px;
+            border: 2px solid transparent;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .toggle-switch:focus {
+            outline: none;
+        }
+        .toggle-switch:focus-visible {
+            box-shadow: 0 0 0 2px #000000, 0 0 0 4px #A855F7; /* ring-2 ring-offset-2 ring-offset-black ring-brand-purple-light */
+        }
+        .toggle-circle {
+            pointer-events: none;
+            display: inline-block;
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            background-color: white;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+            transform: translateX(0);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Stili per lo stato "on" e "off" del toggle */
+        .toggle-switch[aria-checked="true"] {
+            background-color: #9333EA; /* brand-purple */
+        }
+        .toggle-switch[aria-checked="true"] .toggle-circle {
+            transform: translateX(1.25rem);
+        }
+        .toggle-switch[aria-checked="false"] {
+            background-color: #3A3A3C; /* neutral-dark-700 */
+        }
+        .toggle-switch[aria-checked="false"] .toggle-circle {
+            transform: translateX(0);
+        }
+
+        /* Stili per la barra di scorrimento */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C1C1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A3A3C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A855F7;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                            200: '#E5E7EB',
+                            100: '#F3F4F6'
+                        }
+                    },
+                    maxWidth: {
+                        'screen-2xl': '1536px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body class="text-neutral-dark-300 selection:bg-brand-purple selection:text-white">
+
+    <!-- Navbar  -->
+    <header class="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-neutral-dark-800">
+        <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-extrabold gradient-text">CULTURALLM</a>
+                </div>
+                <div class="flex-1 px-4 lg:px-12">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="search-outline" class="text-neutral-dark-400"></ion-icon>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full pl-10 pr-3 py-2.5 bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg
+                                    text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none
+                                    focus:ring-1 focus:ring-brand-purple focus:border-brand-purple sm:text-sm"
+                            placeholder="Search questions, topics, cultures...">
+                    </div>
+                </div>
+
+                <!--{/* Icone a destra per schermi grandi */}-->
+                <div class="hidden lg:flex items-center space-x-3 sm:space-x-4">
+                    <button title="Create a Question" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </button>
+                    <button title="Question Dashboard" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </button>
+                    <button title="Profile" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </button>
+                    <button title="Settings" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <button title="Mission & Challenge" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                    </button>
+                    <button title="Notifications" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        <!-- <span class="absolute top-0.5 right-0.5 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500"></span> Esempio notifica -->
+                    </button>
+                    <button title="Shop" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                    </button>
+                    <button title="Message" class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    </button>
+                    <div class="w-px h-6 bg-gray-500 opacity-50"></div>
+                    <button title="Log-out" class="p-1.5 rounded-full text-red-500 hover:text-white hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                    </button>
+                </div>
+
+                <!--{/* Pulsante Hamburger per schermi piccoli e Menu Dropdown */}-->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuButton" class="p-2 rounded-md text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-purple-light">
+                        <span class="sr-only">Open main menu</span>
+                        <ion-icon name="menu-outline" id="menuIconOpen" class="block h-6 w-6"></ion-icon>
+                        <ion-icon name="close-outline" id="menuIconClose" class="hidden h-6 w-6"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!--{/* Menu Dropdown Mobile - inizialmente nascosto */}-->
+            <div id="mobileMenu" class="hidden lg:hidden absolute right-4 mt-2 w-56 origin-top-right bg-neutral-dark-900 border border-neutral-dark-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobileMenuButton" tabindex="-1">
+                <div class="py-1" role="none">
+                    <a href="#" title="Create a Question" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create
+                    </a>
+                    <a href="#" title="Question Dashboard" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="#" title="Profile" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Profile
+                    </a>
+                    <a href="#" title="Settings" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Settings
+                    </a>
+                    <a href="#" title="Mission & Challenge" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        Missions
+                    </a>
+                    <a href="#" title="Notifications" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light relative" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        Notifications
+                        <!-- <span class="absolute top-1.5 right-3 block h-2 w-2 rounded-full bg-red-500"></span> Esempio notifica nel menu -->
+                    </a>
+                    <a href="#" title="Shop" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                        Shop
+                    </a>
+                    <a href="#" title="Message" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                        Messages
+                    </a>
+                    <div class="border-t border-neutral-dark-700 mx-2 my-1"></div>
+                    <a href="#" title="Log-out" class="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-neutral-dark-800 hover:text-red-400" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                        Log-out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenuto principale della pagina Impostazioni -->
+    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-extrabold text-neutral-dark-100 mb-8 md:mb-12">Settings</h1>
+            
+            <div class="space-y-8">
+
+                <!-- Sezione Sicurezza -->
+                <div class="card p-6 md:p-8 rounded-xl">
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="p-2 bg-brand-purple/10 rounded-lg flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-purple-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check-icon lucide-shield-check"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-neutral-dark-100">Security</h2>
+                            <p class="text-sm text-neutral-dark-400">Manage your account security settings</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-neutral-dark-800 pt-6">
+                        <form action="/update-password" method="POST" class="space-y-4">
+                            <h3 class="text-lg font-semibold text-neutral-dark-200 mb-2">Change Password</h3>
+                            <div>
+                                <label for="current_password" class="block text-sm font-medium text-neutral-dark-300 mb-2">Current Password</label>
+                                <input type="password" name="current_password" id="current_password" required class="block w-full bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg py-2.5 px-3 text-neutral-dark-300 placeholder-neutral-dark-700 focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="new_password" class="block text-sm font-medium text-neutral-dark-300 mb-2">New Password</label>
+                                    <input type="password" name="new_password" id="new_password" required class="block w-full bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg py-2.5 px-3 text-neutral-dark-300 placeholder-neutral-dark-700 focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple">
+                                </div>
+                                <div>
+                                    <label for="confirm_password" class="block text-sm font-medium text-neutral-dark-300 mb-2">Confirm Password</label>
+                                    <input type="password" name="confirm_password" id="confirm_password" required class="block w-full bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg py-2.5 px-3 text-neutral-dark-300 placeholder-neutral-dark-700 focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple">
+                                </div>
+                            </div>
+                            <div class="pt-2">
+                                <button type="submit" class="px-5 py-2.5 bg-brand-purple text-white font-semibold rounded-lg hover:bg-brand-purple-light transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-brand-purple-light">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sezione Informazioni di Contatto (Modificabile) -->
+                <div class="card p-6 md:p-8 rounded-xl">
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="p-2 bg-brand-purple/10 rounded-lg flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-purple-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-neutral-dark-100">Contact Information</h2>
+                            <p class="text-sm text-neutral-dark-400">Update your contact details</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-neutral-dark-800 pt-6">
+                        <!-- Contenitore del form per la gestione degli stati -->
+                        <form id="phone-form" action="/update-phone" method="POST" class="space-y-4">
+                            <!-- Stato di Visualizzazione (Default) -->
+                            <div id="view-phone-container" class="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-dark-300">Phone Number</label>
+                                    <p id="phone_number_display" class="text-neutral-dark-100 mt-1 font-medium">+1 (555) 123-4567</p>
+                                </div>
+                                <button type="button" id="edit-phone-btn" class="mt-4 sm:mt-0 px-5 py-2.5 bg-neutral-dark-800 text-white font-semibold rounded-lg hover:bg-neutral-dark-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-brand-purple-light">Update</button>
+                            </div>
+
+                            <!-- Stato di Modifica (Nascosto di default) -->
+                            <div id="edit-phone-container" class="hidden">
+                                <div>
+                                    <label for="phone_number_input" class="block text-sm font-medium text-neutral-dark-300 mb-2">Phone Number</label>
+                                    <input type="tel" id="phone_number_input" name="phone_number" value="+1 (555) 123-4567" class="block w-full sm:max-w-xs bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg py-2.5 px-3 text-neutral-dark-300 placeholder-neutral-dark-700 focus:outline-none focus:ring-1 focus:ring-brand-purple focus:border-brand-purple">
+                                </div>
+                                <div class="flex items-center space-x-3 pt-4">
+                                    <button type="button" id="cancel-phone-btn" class="px-5 py-2.5 bg-neutral-dark-800 text-white font-semibold rounded-lg hover:bg-neutral-dark-700 transition-colors">Cancel</button>
+                                    <button type="submit" id="save-phone-btn" class="px-5 py-2.5 bg-brand-purple text-white font-semibold rounded-lg hover:bg-brand-purple-light transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-brand-purple-light">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sezione Notifiche -->
+                <div class="card p-6 md:p-8 rounded-xl">
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="p-2 bg-brand-purple/10 rounded-lg flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-purple-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-neutral-dark-100">Notifications</h2>
+                            <p class="text-sm text-neutral-dark-400">Manage how you receive notifications</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-neutral-dark-800 divide-y divide-neutral-dark-800">
+                        <div class="flex items-center justify-between py-4">
+                            <div>
+                                <h4 class="font-semibold text-neutral-dark-200">Email Notifications</h4>
+                                <p class="text-sm text-neutral-dark-400">Receive notifications via email</p>
+                            </div>
+                            <button type="button" class="toggle-switch" role="switch" aria-checked="true" id="email_notifications">
+                                <span class="sr-only">Email Notifications</span><span class="toggle-circle"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Zona di Pericolo -->
+                <div class="card p-6 md:p-8 rounded-xl border border-red-500/30">
+                    <div class="flex items-start space-x-4 mb-6">
+                        <div class="p-2 bg-red-500/10 rounded-lg flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-red-400">Danger Zone</h2>
+                            <p class="text-sm text-neutral-dark-400">Irreversible and destructive actions</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-red-500/30 pt-6">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
+                            <div>
+                                <h3 class="font-semibold text-neutral-dark-200">Delete Account</h3>
+                                <p class="text-sm text-neutral-dark-400 mt-1 max-w-md">Once you delete your account, there is no going back. Please be certain.</p>
+                            </div>
+                            <form action="/delete-account" method="POST" class="w-full md:w-auto">
+                                <button type="submit" class="w-full md:w-auto mt-4 md:mt-0 px-5 py-2.5 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-red-500 flex-shrink-0">
+                                    Delete My Account
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione Menu Mobile
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+            }
+            
+            // Gestione Interruttori (Toggle Switches)
+            document.querySelectorAll('.toggle-switch').forEach(button => {
+                button.addEventListener('click', () => {
+                    const isChecked = button.getAttribute('aria-checked') === 'true';
+                    // Inverte lo stato
+                    button.setAttribute('aria-checked', !isChecked);
+                });
+            });
+
+             // ---- CODICE PER MODIFICA TELEFONO ----
+            const viewPhoneContainer = document.getElementById('view-phone-container');
+            const editPhoneContainer = document.getElementById('edit-phone-container');
+            const phoneForm = document.getElementById('phone-form');
+
+            const editButton = document.getElementById('edit-phone-btn');
+            const cancelButton = document.getElementById('cancel-phone-btn');
+            
+            const phoneNumberDisplay = document.getElementById('phone_number_display');
+            const phoneNumberInput = document.getElementById('phone_number_input');
+
+            // Quando si clicca su "Update"
+            editButton.addEventListener('click', () => {
+                // Nascondi la visualizzazione e mostra il form di modifica
+                viewPhoneContainer.classList.add('hidden');
+                editPhoneContainer.classList.remove('hidden');
+                // Imposta il valore dell'input con il testo corrente e metti il focus
+                phoneNumberInput.value = phoneNumberDisplay.textContent;
+                phoneNumberInput.focus();
+            });
+
+            // Quando si clicca su "Cancel"
+            cancelButton.addEventListener('click', () => {
+                // Nascondi il form di modifica e mostra di nuovo la visualizzazione
+                editPhoneContainer.classList.add('hidden');
+                viewPhoneContainer.classList.remove('hidden');
+            });
+
+            // Quando il form viene inviato (cliccando su "Save Changes")
+            phoneForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Impedisce il ricaricamento della pagina
+                
+                const newPhoneNumber = phoneNumberInput.value;
+                
+                // Aggiorna il testo visualizzato
+                phoneNumberDisplay.textContent = newPhoneNumber;
+                
+        
+                editPhoneContainer.classList.add('hidden');
+                viewPhoneContainer.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
