@@ -1,4 +1,0 @@
-controllo periodico su da quanto tempo una domanda non riceve una risposta 
-
-
-LLM risponde quando domanda viene fatta e poi un utente può o rispondere alla domanda o chiedere nuovamnte quella domanda alla LLM
