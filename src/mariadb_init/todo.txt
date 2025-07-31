@@ -1,0 +1,2 @@
+verificare le cose commentate, vedendo i requisiti
+answer_text non dovrebbe essere unique se più utenti possono dare la stessa risposta
