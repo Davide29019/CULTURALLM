@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask a Cultural Question - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style> 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* black */
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #0F0F0F; /* Un nero leggermente più chiaro per le card */
+            border: 1px solid #2C2C2E; /* neutral-dark-800 */
+        }
+        .icon-muted {
+            color: #A0A0A0; /* neutral-dark-400 */
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C1C1E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A3A3C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A855F7;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                            200: '#E5E7EB',
+                            100: '#F3F4F6'
+                        }
+                    },
+                    maxWidth: {
+                        'screen-2xl': '1536px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body class="text-neutral-dark-300 selection:bg-brand-purple selection:text-white">
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-neutral-dark-800">
+        <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="/home" class="text-2xl font-extrabold gradient-text">CULTURALLM</a>
+                </div>
+                <div class="flex-1 px-4 lg:px-12">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="search-outline" class="text-neutral-dark-400"></ion-icon>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full pl-10 pr-3 py-2.5 bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg
+                                    text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none
+                                    focus:ring-1 focus:ring-brand-purple focus:border-brand-purple sm:text-sm"
+                            placeholder="Search questions, topics, cultures...">
+                    </div>
+                </div>
+
+                <!--{/* Icone a destra per schermi grandi */}-->
+                <div class="hidden lg:flex items-center space-x-3 sm:space-x-4">
+                    <form id="post_question-form" action="/post_question" method="get" style="display: none;"></form>
+
+                    <a href="/post_question" 
+                    title="Create a Question" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </a>
+
+
+                     <a href="/questions" 
+                    title="Question Dashboard" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </a>
+
+                    <a href="/your_profile_page" 
+                    title="Profile" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </a>
+
+                    <a href="/setting_page" 
+                    title="Settings" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+
+                    </a>
+
+                    <a href="/missions" 
+                    title="Mission & Challenge" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+
+                    </a>
+
+                    <a href="/notifications" 
+                    title="Notifications" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        <!-- <span class="absolute top-0.5 right-0.5 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500"></span> Esempio notifica -->
+
+                    </a>
+
+                     <a href="/shop_page" 
+                    title="Shop" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+
+                    </a>
+
+                    <a href="/message_page" 
+                    title="Message" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+
+                    </a>
+
+                    <div class="w-px h-6 bg-gray-500 opacity-50"></div>
+                    <!-- Form invisibile necessario per avere logout come app.post-->
+                    <form id="logout-form" action="/logout" method="post" style="display: none;"></form>
+
+                    <!-- Link che invia il form -->
+                    <a href="#" 
+                    title="Log-out" 
+                    class="p-1.5 rounded-full text-red-500 hover:text-white hover:bg-neutral-dark-800 transition-colors hover:rounded-md inline-flex items-center justify-center"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m16 17 5-5-5-5"/>
+                            <path d="M21 12H9"/>
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+                <!--{/* Pulsante Hamburger per schermi piccoli e Menu Dropdown */}-->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuButton" class="p-2 rounded-md text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-purple-light">
+                        <span class="sr-only">Open main menu</span>
+                        <ion-icon name="menu-outline" id="menuIconOpen" class="block h-6 w-6"></ion-icon>
+                        <ion-icon name="close-outline" id="menuIconClose" class="hidden h-6 w-6"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!--{/* Menu Dropdown Mobile - inizialmente nascosto */}-->
+            <div id="mobileMenu" class="hidden lg:hidden absolute right-4 mt-2 w-56 origin-top-right bg-neutral-dark-900 border border-neutral-dark-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobileMenuButton" tabindex="-1">
+                <div class="py-1" role="none">
+                    <a href="/post_question" title="Create a Question" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create
+                    </a>
+                    <a href="/questions" title="Question Dashboard" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="/your_profile_page" title="Profile" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Profile
+                    </a>
+                    <a href="/setting_page" title="Settings" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Settings
+                    </a>
+                    <a href="/missions" title="Mission & Challenge" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        Missions
+                    </a>
+                    <a href="/notifications" title="Notifications" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light relative" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        Notifications
+                        <!-- <span class="absolute top-1.5 right-3 block h-2 w-2 rounded-full bg-red-500"></span> Esempio notifica nel menu -->
+                    </a>
+                    <a href="/shop_page" title="Shop" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                        Shop
+                    </a>
+                    <a href="/message_page" title="Message" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                        Messages
+                    </a>
+                    <div class="border-t border-neutral-dark-700 mx-2 my-1"></div>
+                    <form id="logout-form" action="/logout" method="post" style="display: none;"></form>
+                    <a href="#" title="Log-out" class="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-neutral-dark-800 hover:text-red-400" role="menuitem" tabindex="-1"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                        Log-out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <form id="back-form" action="/last_visited" method="get" style="display: none;"></form>
+
+        <div class="mb-8">
+            <a href="#" class="flex items-center text-neutral-dark-400 hover:text-white transition-colors text-sm"
+            onclick="event.preventDefault(); document.getElementById('back-form').submit();">
+                <ion-icon name="arrow-back-outline" class="mr-2 text-lg"></ion-icon>
+                Back
+            </a>
+        </div>
+
+        <div class="text-center mb-10 md:mb-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-neutral-dark-100 mb-3">
+                Ask a Cultural Question
+            </h2>
+            <p class="text-base text-neutral-dark-400 max-w-3xl mx-auto">
+                Share your curiosity about cultures around the world and get insights from our global community.
+            </p>
+        </div>
+
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+
+            <!-- Colonna Sinistra: Form -->
+            <div class="lg:col-span-2">
+                <!-- ================== FORM 1: ASK A QUESTION MANUALE ================== -->
+                <form id="question-form" class="card bg-black p-6 sm:p-8 rounded-xl space-y-8" action="/user_question" method="POST">
+                    <div>
+                        <h3 class="text-2xl font-bold text-neutral-dark-200 mb-1">Question Details</h3>
+                        <p class="text-neutral-dark-400">Be specific and clear to get the best answers from the community.</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="question-details" class="block font-semibold text-neutral-dark-200">Question Details <span class="text-red-500 ml-1">*</span></label>
+                        <textarea id="question-details" name="question_text" rows="6" required
+                                  class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"
+                                  placeholder="Ask a specific cultural question, e.g. 'What are wedding traditions in India?' or 'How do people greet each other in Brazil?'"></textarea>
+                        <p class="text-sm text-neutral-dark-400">Ask clear, specific questions to get helpful and culturally rich responses.</p>
+                    </div>
+
+                   <div class="space-y-4">
+                        <div>
+                            <label for="theme-select" class="block font-semibold text-neutral-dark-200">Theme <span class="text-red-500 ml-1">*</span></label>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Select the theme that best fits your question.</p>
+                            <select id="theme-select" name="theme" required
+                                    class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                                <option value="" disabled selected  >Select a theme...</option>
+                                {%for key in themes%}
+                                    {%set theme = themes[key]%}
+                                    <option value="{{theme['id']}}">{{theme['name']}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div id="theme-chip-container" class="flex flex-wrap gap-2 mt-2 min-h-[36px]"></div>
+                        <input type="hidden" name="selected_theme" id="selected-theme-hidden-input">
+                        <div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Or pick a suggested theme:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['0']['id']}}">{{themes['0']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['1']['id']}}">{{themes['1']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['4']['id']}}">{{themes['4']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['6']['id']}}">{{themes['6']['name']}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="space-y-4">
+                        <div>
+                            <label for="llm-select" class="block font-semibold text-neutral-dark-200">Model <span class="text-red-500 ml-1">*</span></label>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Select the model that will automatically answer your question.</p>
+                            <select id="llm-select" name="llm" required
+                                    class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                                <option value="" disabled selected>Select a model...</option>
+
+                                {%for key in llms%}
+                                    {%set llm = llms[key]%}
+                                    <option value="{{llm['id']}}">{{llm['name']}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div id="llm-chip-container" class="flex flex-wrap gap-2 mt-2 min-h-[36px]"></div>
+                        <input type="hidden" name="selected_llm" id="selected-llm-hidden-input">
+                    </div>
+
+                    <div class="flex justify-end items-center space-x-4 pt-4 border-t border-neutral-dark-800">
+                        <button type="button" class="px-6 py-2.5 rounded-lg text-neutral-dark-300 hover:bg-neutral-dark-800 transition-colors font-semibold">Cancel</button>
+                        <button type="submit" class="bg-brand-purple hover:bg-brand-purple-light text-white font-bold px-6 py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-purple/20">Post Question</button>
+                    </div>
+                </form>
+                
+                <!-- ================== FORM 2: GENERATE A QUESTION WITH AI ================== -->
+                 <form id="generate-question-form" class="card bg-black p-6 sm:p-8 rounded-xl space-y-8 mt-5" action="/llm_question" method="POST" >
+                    <div>
+                        <h3 class="text-2xl font-bold text-neutral-dark-200 mb-1">Or let an AI model generate a question for you.</h3>
+                        <p class="text-neutral-dark-400">Pick a topic for your question.</p>
+                    </div>
+
+                   <div class="space-y-4">
+                        <div>
+                            <label for="theme-select-generate" class="block font-semibold text-neutral-dark-200">Theme <span class="text-red-500 ml-1">*</span></label>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Select a topic to generate a question about.</p>
+                            <select id="theme-select-generate" name="theme_generate" required
+                                    class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                                {%for key in themes%}
+                                    {%set theme = themes[key]%}
+                                    <option value="{{theme['id']}}">{{theme['name']}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div id="theme-chip-container-generate" class="flex flex-wrap gap-2 mt-2 min-h-[36px]"></div>
+                        <input type="hidden" name="selected_theme_generate" id="selected-theme-hidden-input-generate">
+                        <div>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Or pick a suggested theme:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['0']['id']}}">{{themes['0']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['1']['id']}}">{{themes['1']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['4']['id']}}">{{themes['4']['name']}}</button>
+                                <button type="button" class="suggested-theme-btn px-3 py-1 bg-neutral-dark-800 border border-neutral-dark-700 text-neutral-dark-300 rounded-full text-sm hover:bg-brand-purple hover:border-brand-purple hover:text-white transition-colors cursor-pointer" data-theme-value="{{themes['6']['id']}}">{{themes['6']['name']}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="space-y-4">
+                        <div>
+                            <label for="llm-select-generate" class="block font-semibold text-neutral-dark-200">Model <span class="text-red-500 ml-1">*</span></label>
+                            <p class="text-sm text-neutral-dark-400 mb-2">Select the model you want to generate the question.</p>
+                            <select id="llm-select-generate" name="llm_generate" required
+                                    class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                                <option value="" disabled selected>Select a model...</option>
+                                {%for key in llms%}
+                                    {%set llm = llms[key]%}
+                                    <option value="{{llm['id']}}">{{llm['name']}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div id="llm-chip-container-generate" class="flex flex-wrap gap-2 mt-2 min-h-[36px]"></div>
+                        <input type="hidden" name="selected_llm_generate" id="selected-llm-hidden-input-generate">
+                    </div>
+
+                    <div class="flex justify-end items-center space-x-4 pt-4 border-t border-neutral-dark-800">
+                        <button type="button" class="px-6 py-2.5 rounded-lg text-neutral-dark-300 hover:bg-neutral-dark-800 transition-colors font-semibold">Cancel</button>
+                        <button type="submit" class="bg-brand-purple hover:bg-brand-purple-light text-white font-bold px-6 py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-purple/20">Generate Question</button>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Colonna Destra: Sidebar -->
+            <div class="space-y-8">
+                <div class="card p-6 bg-black rounded-xl">
+                    <h4 class="text-xl font-bold text-neutral-dark-200 mb-4 flex items-center">
+                        <ion-icon name="bulb-outline" class="mr-3 text-brand-purple-light text-2xl"></ion-icon>
+                        Tips for Great Questions
+                    </h4>
+                    <ul class="space-y-5 text-neutral-dark-400 text-sm">
+                        <li>
+                            <strong class="block text-neutral-dark-200 font-semibold mb-1">Be Specific</strong>
+                            Mention specific cultures, regions, or practices you're curious about.
+                        </li>
+                        <li>
+                            <strong class="block text-neutral-dark-200 font-semibold mb-1">Use Relevant Tags</strong>
+                            Tags help the right experts find and answer your question.
+                        </li>
+                        <li>
+                            <strong class="block text-neutral-dark-200 font-semibold mb-1">Be Respectful</strong>
+                            Approach cultural topics with curiosity and respect.
+                        </li>
+                        <li>
+                            <strong class="block text-neutral-dark-200 font-semibold mb-1">Be Open to Differences</strong>
+                            Cultural practices can vary even within the same region. Embrace the complexity with interest.
+                        </li>
+                        <li>
+                            <strong class="block text-neutral-dark-200 font-semibold mb-1">Be Concise but Complete</strong>
+                            Avoid overly long explanations, but make sure to include all relevant information for clarity.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card p-6 bg-black rounded-xl">
+                    <h4 class="text-xl font-bold text-neutral-dark-200 mb-4 flex items-center">
+                        <ion-icon name="shield-checkmark-outline" class="mr-3 text-brand-purple-light text-2xl"></ion-icon>
+                        Community Guidelines</h4>
+                    <ul class="space-y-3 text-neutral-dark-400 list-disc list-inside text-sm">
+                        <li>Ask genuine questions about cultural practices.</li>
+                        <li>Avoid stereotypes or generalizations.</li>
+                        <li>Welcome Different Viewpoints</li>
+                        <li>Choose words that respect all identities and cultural backgrounds.</li>
+                        <li>Support a Safe Environment, flag harmful content or behavior.</li>
+                    </ul>
+                </div>
+                <!-- ====== FORM PER INSERIRE NUOVI TEMI - MODELLI ============-->
+                <form id="request-form" class="card bg-black p-6 sm:p-8 rounded-xl space-y-8" action="#" method="POST" novalidate>
+                    <h4 class="text-xl font-bold text-neutral-dark-200 mb-4 flex items-center">
+                        Can’t find what you’re looking for?
+                    </h4>
+                    <div class="space-y-2">
+                        <label for="ask-theme" class="block font-semibold text-neutral-dark-400">Can't find the right topic for your question? Contact us to suggest adding it.</label>
+                        <textarea id="ask-theme" name="ask-theme" rows="4" required
+                                  class="block w-full px-4 py-3 bg-neutral-dark-950 border border-neutral-dark-700 rounded-lg text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"
+                                  placeholder=""></textarea>
+                        
+                    </div>
+                    <div class="flex justify-end items-center space-x-4 pt-4 border-t border-neutral-dark-800">
+                        <button type="button" class="px-6 py-2.5 rounded-lg text-neutral-dark-300 hover:bg-neutral-dark-800 transition-colors font-semibold">Cancel</button>
+                        <button type="submit" class="bg-brand-purple hover:bg-brand-purple-light text-white font-bold px-6 py-2.5 rounded-lg transition-colors shadow-lg shadow-brand-purple/20">Send Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione Menu Mobile
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+            }
+
+            // Funzione riutilizzabile per gestire la logica dei selettori con "chip"
+            function setupChipSelector(config) {
+                const selectElement = document.getElementById(config.selectId);
+                const chipContainer = document.getElementById(config.chipContainerId);
+                const hiddenInput = document.getElementById(config.hiddenInputId);
+                const suggestedButtons = document.querySelectorAll(config.suggestedButtonsSelector);
+
+                if (!selectElement || !chipContainer || !hiddenInput) {
+                    // console.error("One or more elements not found for selector setup:", config);
+                    return;
+                }
+                
+                function renderChip() {
+                    chipContainer.innerHTML = ''; // Pulisce il contenitore
+                    const selectedValue = selectElement.value;
+
+                    if (selectedValue) {
+                        const selectedText = selectElement.options[selectElement.selectedIndex].text;
+
+                        const chipElement = document.createElement('span');
+                        chipElement.className = 'flex items-center bg-brand-purple text-white text-sm font-medium pl-3 pr-2 py-1 rounded-full';
+                        chipElement.innerHTML = `${selectedText}
+                            <button type="button" class="remove-chip-btn ml-2 hover:text-white">
+                                <ion-icon name="close-circle" class="text-base text-white pointer-events-none translate-y-[3px]"></ion-icon>
+                            </button>`;
+                        
+                        chipContainer.appendChild(chipElement);
+                        hiddenInput.value = selectedValue;
+
+                        chipElement.querySelector('.remove-chip-btn').addEventListener('click', () => {
+                            selectElement.value = '';
+                            renderChip();
+                        });
+                    } else {
+                        hiddenInput.value = '';
+                    }
+                }
+
+                selectElement.addEventListener('change', renderChip);
+
+                if (suggestedButtons && suggestedButtons.length > 0) {
+                    suggestedButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const value = button.dataset[config.dataAttribute];
+                            if (value) {
+                                selectElement.value = value;
+                                renderChip();
+                            }
+                        });
+                    });
+                }
+            }
+            
+            
+
+            // ==========================================================
+            // LOGICA PER IL PRIMO FORM (Ask a Question Manually)
+            // ==========================================================
+            
+            // Configurazione per la selezione del Tema (Form 1)
+            setupChipSelector({
+                selectId: 'theme-select',
+                chipContainerId: 'theme-chip-container',
+                hiddenInputId: 'selected-theme-hidden-input',
+                suggestedButtonsSelector: '#question-form .suggested-theme-btn',
+                dataAttribute: 'themeValue'
+            });
+
+            // Configurazione per la selezione del Modello LLM (Form 1)
+            setupChipSelector({
+                selectId: 'llm-select',
+                chipContainerId: 'llm-chip-container',
+                hiddenInputId: 'selected-llm-hidden-input'
+            });
+            /*
+            // Gestione dell'invio del primo form (Non serve ma aggiunta da chat)
+            const questionForm = document.getElementById('question-form');
+            if (questionForm) {
+                questionForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const questionDetails = questionForm.querySelector('#question-details').value;
+                    const selectedTheme = questionForm.querySelector('#selected-theme-hidden-input').value;
+                    const selectedLlm = questionForm.querySelector('#selected-llm-hidden-input').value;
+
+                    // Validazione
+                    if (!questionDetails.trim() || !selectedTheme || !selectedLlm) {
+                        alert('Please fill in all required fields: Question Details, Theme, and Model.');
+                        return;
+                    }
+
+                    const data = {
+                        details: questionDetails,
+                        theme: selectedTheme,
+                        llm: selectedLlm
+                    };
+            
+                });
+            }*/
+
+            // ==========================================================
+            // LOGICA PER IL SECONDO FORM (Generate Question with AI)
+            // ==========================================================
+            
+            // Configurazione per la selezione del Tema (Form 2)
+            setupChipSelector({
+                selectId: 'theme-select-generate',
+                chipContainerId: 'theme-chip-container-generate',
+                hiddenInputId: 'selected-theme-hidden-input-generate',
+                suggestedButtonsSelector: '#generate-question-form .suggested-theme-btn',
+                dataAttribute: 'themeValue'
+            });
+
+            // Configurazione per la selezione del Modello LLM (Form 2)
+            setupChipSelector({
+                selectId: 'llm-select-generate',
+                chipContainerId: 'llm-chip-container-generate',
+                hiddenInputId: 'selected-llm-hidden-input-generate'
+            });
+            /*
+            // Gestione dell'invio del secondo form (Non serve ma aggiunta da chat)
+            const generateForm = document.getElementById('generate-question-form');
+            if (generateForm) {
+                generateForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    
+                    const selectedTheme = generateForm.querySelector('#selected-theme-hidden-input-generate').value;
+                    const selectedLlm = generateForm.querySelector('#selected-llm-hidden-input-generate').value;
+
+                    // Validazione
+                    if (!selectedTheme || !selectedLlm) {
+                        alert('Please select a Theme and a Model to generate a question.');
+                        return;
+                    }
+
+                    const data = {
+                        theme: selectedTheme,
+                        llm: selectedLlm
+                    };
+
+                });
+            }*/
+        });
+        
+    </script>
+</body>
+</html>
