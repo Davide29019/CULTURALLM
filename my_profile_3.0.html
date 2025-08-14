@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - CULTURALLM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- INCLUSIONE CROPPER.JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        /* Stili Personalizzati */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #d8b4fe, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tab-active {
+            color: #F3F4F6; /* neutral-dark-100 */
+            border-bottom: 2px solid #A855F7; /* brand-purple-light */
+        }
+        .tab-inactive {
+            color: #A0A0A0; /* neutral-dark-400 */
+            border-bottom: 2px solid transparent;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1C1C1E; }
+        ::-webkit-scrollbar-thumb { background: #3A3A3C; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #A855F7; }
+
+        /* Stili per il cropper e il suo contenitore */
+        .cropper-container-modal {
+            max-height: 70vh;
+        }
+        .cropper-bg {
+            background: rgba(0,0,0,0.7);
+        }
+        .cropper-view-box,
+        .cropper-face {
+          border-radius: 50%;
+        }
+    </style>
+    <script>
+        // Configurazione di Tailwind CSS
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': {
+                            light: '#A855F7',
+                            DEFAULT: '#9333EA',
+                            dark: '#7E22CE'
+                        },
+                        'neutral-dark': {
+                            950: '#0F0F0F',
+                            900: '#1C1C1E',
+                            800: '#2C2C2E',
+                            700: '#3A3A3C',
+                            400: '#A0A0A0',
+                            300: '#D1D5DB',
+                            200: '#E5E7EB',
+                            100: '#F3F4F6'
+                        },
+                        'brand-purple-deep': '#28193a'
+                    },
+                    maxWidth: {
+                        'screen-2xl': '1536px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body class="text-neutral-dark-300 selection:bg-brand-purple selection:text-white">
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-neutral-dark-800">
+        <div class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="/home" class="text-2xl font-extrabold gradient-text">CULTURALLM</a>
+                </div>
+                <div class="flex-1 px-4 lg:px-12">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="search-outline" class="text-neutral-dark-400"></ion-icon>
+                        </div>
+                        <input type="search" name="search" id="search"
+                            class="block w-full pl-10 pr-3 py-2.5 bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg
+                                    text-neutral-dark-300 placeholder-neutral-dark-400 focus:outline-none
+                                    focus:ring-1 focus:ring-brand-purple focus:border-brand-purple sm:text-sm"
+                            placeholder="Search questions, topics, cultures...">
+                    </div>
+                </div>
+
+                <!--{/* Icone a destra per schermi grandi */}-->
+                <div class="hidden lg:flex items-center space-x-3 sm:space-x-4">
+                    <form id="post_question-form" action="/post_question" method="get" style="display: none;"></form>
+
+                    <a href="/post_question" 
+                    title="Create a Question" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </a>
+
+
+                     <a href="/questions" 
+                    title="Question Dashboard" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </a>
+
+                    <a href="/your_profile_page" 
+                    title="Profile" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </a>
+
+                    <a href="/setting_page" 
+                    title="Settings" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+
+                    </a>
+
+                    <a href="/missions" 
+                    title="Mission & Challenge" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+
+                    </a>
+
+                    <a href="/notifications" 
+                    title="Notifications" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        <!-- <span class="absolute top-0.5 right-0.5 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500"></span> Esempio notifica -->
+
+                    </a>
+
+                     <a href="/shop_page" 
+                    title="Shop" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+
+                    </a>
+
+                    <a href="/message_page" 
+                    title="Message" 
+                    class="p-1.5 rounded-full text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 transition-colors hover:rounded-md"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+
+                    </a>
+
+                    <div class="w-px h-6 bg-gray-500 opacity-50"></div>
+                    <!-- Form invisibile necessario per avere logout come app.post-->
+                    <form id="logout-form" action="/logout" method="post" style="display: none;"></form>
+
+                    <!-- Link che invia il form -->
+                    <a href="#" 
+                    title="Log-out" 
+                    class="p-1.5 rounded-full text-red-500 hover:text-white hover:bg-neutral-dark-800 transition-colors hover:rounded-md inline-flex items-center justify-center"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m16 17 5-5-5-5"/>
+                            <path d="M21 12H9"/>
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+                <!--{/* Pulsante Hamburger per schermi piccoli e Menu Dropdown */}-->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobileMenuButton" class="p-2 rounded-md text-white hover:text-brand-purple-light hover:bg-neutral-dark-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-purple-light">
+                        <span class="sr-only">Open main menu</span>
+                        <ion-icon name="menu-outline" id="menuIconOpen" class="block h-6 w-6"></ion-icon>
+                        <ion-icon name="close-outline" id="menuIconClose" class="hidden h-6 w-6"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!--{/* Menu Dropdown Mobile - inizialmente nascosto */}-->
+            <div id="mobileMenu" class="hidden lg:hidden absolute right-4 mt-2 w-56 origin-top-right bg-neutral-dark-900 border border-neutral-dark-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="mobileMenuButton" tabindex="-1">
+                <div class="py-1" role="none">
+                    <a href="/post_question" title="Create a Question" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create
+                    </a>
+                    <a href="/questions" title="Question Dashboard" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                        Dashboard
+                    </a>
+                    <a href="/your_profile_page" title="Profile" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Profile
+                    </a>
+                    <a href="/setting_page" title="Settings" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Settings
+                    </a>
+                    <a href="/missions" title="Mission & Challenge" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        Missions
+                    </a>
+                    <a href="/notifications" title="Notifications" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light relative" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                        Notifications
+                        <!-- <span class="absolute top-1.5 right-3 block h-2 w-2 rounded-full bg-red-500"></span> Esempio notifica nel menu -->
+                    </a>
+                    <a href="/shop_page" title="Shop" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                        Shop
+                    </a>
+                    <a href="/message_page" title="Message" class="flex items-center px-4 py-2 text-sm text-neutral-dark-200 hover:bg-neutral-dark-800 hover:text-brand-purple-light" role="menuitem" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                        Messages
+                    </a>
+                    <div class="border-t border-neutral-dark-700 mx-2 my-1"></div>
+                    <form id="logout-form" action="/logout" method="post" style="display: none;"></form>
+                    <a href="#" title="Log-out" class="flex items-center px-4 py-2 text-sm text-red-500 hover:bg-neutral-dark-800 hover:text-red-400" role="menuitem" tabindex="-1"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                        Log-out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- VISTA PROFILO -->
+        <div id="profile-view">
+            <div class="relative">
+                <div class="h-48 md:h-64 rounded-xl bg-brand-purple-deep"></div>
+                <div class="absolute -bottom-16 left-8 md:left-12">
+                    <img id="profile-pic-display" src="{{user_data['avatar']}}" alt="Profile Picture" class="h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-black object-cover bg-neutral-dark-800">
+                </div>
+                 <button id="edit-profile-btn" class="absolute top-4 right-4 bg-neutral-dark-900/50 backdrop-blur-sm border border-neutral-dark-800 text-neutral-dark-300 hover:text-white hover:bg-neutral-dark-800 px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition-all">
+                    <ion-icon name="settings-outline"></ion-icon>
+                    <span>Edit Profile</span>
+                </button>
+            </div>
+
+            <div class="mt-20 px-4 md:px-12">
+                {%if user_data['name']%}
+                <h1 id="profile-name-display" class="text-3xl md:text-4xl font-bold text-neutral-dark-100">
+                    {{user_data['name']}} {{user_data['surname']}}
+                </h1>
+                {%endif%}
+                <p id="profile-username-display" class="text-neutral-dark-400">
+                    @{{user_data['username']}}
+                </p>
+                <!-- ============ DA IMPLEMENTARE ================ -->
+                <!-- NUOVO: CONTENITORE PER IL TITOLO/LIVELLO -->
+                <div id="profile-title-display" class="mt-4">
+                    <div class="inline-flex items-center gap-2 bg-brand-purple-deep border border-brand-purple-dark py-1 px-3 rounded-full">
+                        <ion-icon name="ribbon-outline" class="text-brand-purple-light"></ion-icon>
+                        <span id="profile-title-text" class="text-sm font-semibold text-brand-purple-light">
+                            <!-- Popolato da JS -->
+                        </span>
+                    </div>
+                </div>
+                <!-- =========================================-->
+                {%if user_data['bio']%}
+                <p id="profile-bio-display" class="mt-4 max-w-3xl text-neutral-dark-300">
+                    {{user_data['bio']}}
+                </p>
+                {%endif%}
+                <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-dark-400">
+                    {%if user_data['location']%}
+                    <div id="profile-location-display" class="flex items-center gap-2">
+                        <ion-icon name="location-outline"></ion-icon>
+                        <span>{{user_data['location']}}</span>
+                    </div>
+                    {%endif%}
+                    {%if user_data['birthday']%}
+                    <div id="profile-birthdate-display" class="flex items-center gap-2">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span>Born {{user_data['birthday']}}</span>
+                    </div>
+                    {%endif%}
+                    <div id="profile-joined-display" class="flex items-center gap-2">
+                        <ion-icon name="time-outline"></ion-icon>
+                        <span>{{user_data['formatted_created_at']}}</span>
+                    </div>
+                    {%if user_data['website']%}
+                    <div id="profile-website-display" class="flex items-center gap-2">
+                        <ion-icon name="globe-outline"></ion-icon>
+                        <a href="#" class="hover:text-brand-purple-light">{{user_data['website']}}</a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+
+            <!-- Statistiche -->
+            <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="chatbox-ellipses-outline" class="text-2xl text-brand-purple-light mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">{{user_data['question_number']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Questions Asked</p>
+                </div>
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="pencil-outline" class="text-2xl text-brand-purple-light mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">{{user_data['answer_number']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Answers Given</p>
+                </div>
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="trophy-outline" class="text-2xl text-yellow-400 mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">#{{user_data['position']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Leaderboard Rank</p>
+                </div>
+
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="ribbon-outline" class="text-2xl text-brand-purple-light mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">{{user_data['mission_number']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Missions Completed</p>
+                </div>
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="trophy-outline" class="text-2xl text-brand-purple-light mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">{{user_data['user_points']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Points Earned</p>
+                </div>
+                 <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                    <ion-icon name="cash-outline" class="text-2xl text-yellow-400 mb-2"></ion-icon>
+                    <p class="text-2xl font-bold text-white">{{user_data['user_coins']}}</p>
+                    <p class="text-sm text-neutral-dark-400">Coins Earned</p>
+                </div>
+            </div>
+
+            <!-- Navigazione a Schede -->
+            <div class="mt-8 border-b border-neutral-dark-800">
+                <!-- Usa Grid invece di Flex -->
+                <nav class="grid grid-cols-4" aria-label="Tabs">
+                    <!-- Aggiungi text-center a ogni pulsante per allineare il testo -->
+                    <button data-tab="activity-content" class="tab-btn py-4 px-1 text-sm font-medium tab-active text-center">Activity</button>
+                    <button data-tab="questions-content" class="tab-btn py-4 px-1 text-sm font-medium tab-inactive hover:text-white transition-colors text-center">Questions</button>
+                    <button data-tab="answers-content" class="tab-btn py-4 px-1 text-sm font-medium tab-inactive hover:text-white transition-colors text-center">Answers</button>
+                    <button data-tab="achievements-content" class="tab-btn py-4 px-1 text-sm font-medium tab-inactive hover:text-white transition-colors text-center">Achievements</button>
+                </nav>
+            </div>
+            
+            <!-- Contenuto delle Schede -->
+            <div class="mt-6">
+                <!-- Contenuto Attività (Visibile di default) -->
+                <div id="activity-content" class="tab-content space-y-4">
+                     <h2 class="text-xl font-semibold text-neutral-dark-100 mb-4">Recent Activity</h2>
+                     {%if last_activities['last_question']%}
+                     <div class="p-4 bg-neutral-dark-950 border border-neutral-dark-800 rounded-lg">
+                        <p class="text-neutral-dark-200">Asked about <span class="font-semibold text-brand-purple-light">'{{last_activities['last_question']}}'</span></p>
+                        <div class="flex justify-between items-center mt-2 text-sm text-neutral-dark-400">
+                            <span>{{last_activities['question_hours']}} {{last_activities['question_hours_type']}} ago</span>
+                        </div>
+                     </div>
+                     {%endif%}
+                     {%if last_activities['last_answer']%}
+                     <div class="p-4 bg-neutral-dark-950 border border-neutral-dark-800 rounded-lg">
+                        <p class="text-neutral-dark-200">Answered <span class="font-semibold text-brand-purple-light">'{{last_activities['last_answer']}}'</span></p>
+                        <div class="flex justify-between items-center mt-2 text-sm text-neutral-dark-400">
+                            <span>{{last_activities['answer_hours']}} {{last_activities['answer_hours_type']}} ago</span>
+                        </div>
+                     </div>
+                     {%endif%}
+                     {%if last_activities['last_mission']%}
+                     <div class="p-4 bg-neutral-dark-950 border border-neutral-dark-800 rounded-lg">
+                        <p class="text-neutral-dark-200">Completed <span class="font-semibold text-brand-purple-light">'{{last_activities['last_mission']}}'</span></p>
+                        <div class="flex justify-between items-center mt-2 text-sm text-neutral-dark-400">
+                            <span>{{last_activities['mission_hours']}} {{last_activities['mission_hours_type']}} ago</span>
+                            <span class="text-yellow-400">Mission Completed</span>
+                        </div>
+                     </div>
+                     {%endif%}
+                </div>
+
+                <!-- Contenuto Domande (Nascosto) -->
+                <div id="questions-content" class="tab-content hidden">
+                    <h2 class="text-xl font-semibold text-neutral-dark-100 mb-4">Questions Asked ({{user_data['question_number']}})</h2>
+                    
+                    <div id="questions-list" class="space-y-4">
+                        {%for key in user_question%}
+                        {%set question = user_question[key]%}
+
+                        <form id="question-page-form-{{question['question_id']}}" action="/questions" method="get" style="display: none;">
+                            <input type="hidden" name="question_id" value="{{question['question_id']}}">
+                        </form>
+
+
+                        <div class="p-4 bg-neutral-dark-950 border border-neutral-dark-800 rounded-lg flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                            <div class="flex-1 min-w-0">
+                                <a href="#" class="block font-semibold text-neutral-dark-100 hover:text-brand-purple-light transition-colors truncate"
+                                onclick="event.preventDefault(); document.getElementById('question-page-form-{{question['question_id']}}').submit();"
+                                >{{question['question_text']}}</a>
+                                <div class="flex items-center text-sm text-neutral-dark-400 mt-1 space-x-3">
+                                    <span>{{question['hours']}} {{question['hours_type']}} ago</span>
+                                    <span class="text-neutral-dark-700">|</span>
+                                    <div class="flex items-center gap-1.5">
+                                        {%if question['status'] == 'open'%} <span class="inline-block w-2 h-2 mr-2 rounded-full bg-green-400"></span> <span>Active</span> {%endif%}
+                                    {%if question['status'] == 'ranking'%} 
+                                    <span class="inline-block w-2 h-2 mr-2 rounded-full bg-orange-400"></span>
+                                    <span>Ranking</span>
+                                    {%endif%}
+                                    {%if question['status'] == 'close'%}
+                                    <span class="inline-block w-2 h-2 mr-2 rounded-full bg-red-400"></span>
+                                    <span>Closed</span>
+                                {%endif%}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-neutral-dark-300 flex-shrink-0">
+                                <span class="flex items-center gap-1.5"><ion-icon name="arrow-up-outline"></ion-icon> {{question['upvotes']}}</span>
+                                <span class="flex items-center gap-1.5"><ion-icon name="arrow-down-outline"></ion-icon> {{question['downvotes']}}</span>
+                                <span class="flex items-center gap-1.5"><ion-icon name="chatbox-ellipses-outline"></ion-icon> {{question['answer_number']}}</span>
+                            </div>
+                        </div>
+
+                        {%endfor%}
+                    
+
+                    </div>
+
+                    <!-- Pulsante Load More (solo visivo) -->
+                    <div class="mt-8 text-center">
+                        <button class="bg-neutral-dark-800 hover:bg-neutral-dark-700 text-neutral-dark-200 font-semibold py-2.5 px-6 rounded-lg transition-colors">
+                            Load More Questions
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenuto Risposte (Nascosto) -->
+                <div id="answers-content" class="tab-content hidden">
+                    <h2 class="text-xl font-semibold text-neutral-dark-100 mb-4">Answers Given ({{user_data['answer_number']}})</h2>
+                    
+                    <div id="answers-list" class="space-y-4">
+                        {%for key in user_answer%}
+                        {%set answer = user_answer[key]%}
+
+                        <form id="question-page-form-{{answer['question_id']}}" action="/questions" method="get" style="display: none;">
+                            <input type="hidden" name="question_id" value="{{answer['question_id']}}">
+                        </form>
+
+                            <div class="p-4 bg-neutral-dark-950 border border-neutral-dark-800 rounded-lg">
+                            <div class="flex items-center text-sm text-neutral-dark-400">
+                                <span class="flex-shrink-0 mr-1.5">Answered to</span>
+                                <a href="#" class="font-semibold text-brand-purple-light hover:underline truncate"
+                                onclick="event.preventDefault(); document.getElementById('question-page-form-{{answer['question_id']}}').submit();">
+                                    {{answer['question_text']}}
+                                </a>
+                            </div>
+                            
+                            <p class="mt-2 text-neutral-dark-200 line-clamp-2">
+                                {{answer['answer_text']}}
+                            </p>
+
+                            <div class="flex justify-between items-center mt-3 text-sm text-neutral-dark-400">
+                                <span>{{answer['hours']}} {{answer['hours_type']}} ago</span>
+                            </div>
+                        </div>
+
+                        {%endfor%}
+                        
+
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <button class="bg-neutral-dark-800 hover:bg-neutral-dark-700 text-neutral-dark-200 font-semibold py-2.5 px-6 rounded-lg transition-colors">
+                            Load More Answers
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenuto Achievements (Nascosto) -->
+                <div id="achievements-content" class="tab-content hidden">
+                    <h2 class="text-xl font-semibold text-neutral-dark-100 mb-4">Badges & Achievements</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {%if user_data['badges']%}
+                        {%for key in user_data['badges']%}
+                        {%set badge = user_data['badges'][key]%}
+
+                        <div class="bg-neutral-dark-900 border border-neutral-dark-800 rounded-lg p-4 flex items-center gap-4">
+                            {{badge['path'] | safe}}<div>
+                                <h3 class="font-semibold text-white">{{badge['title']}}</h3>
+                                <p class="text-sm text-neutral-dark-400">{{badge['description']}}</p>
+                            </div>
+                        </div>
+                        {%endfor%}
+                        {%endif%}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA MODIFICA PROFILO -->
+        <div id="edit-profile-view" class="hidden">
+            <button id="back-to-profile-btn" class="mb-6 text-sm text-neutral-dark-400 hover:text-white flex items-center gap-2">
+                <ion-icon name="arrow-back-outline"></ion-icon> Back to Profile
+            </button>
+            <h1 class="text-3xl font-bold text-white mb-8">Edit Profile</h1>
+
+            <form id="edit-profile-form" class="space-y-12" enctype="multipart/form-data">
+                 <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-6">
+                    <h2 class="text-lg font-semibold text-neutral-dark-100">Profile Picture</h2>
+                    <p class="text-sm text-neutral-dark-400 mb-4">Update your profile picture</p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <img id="profile-pic-edit-preview" src="{{user_data['avatar']}}" alt="Profile preview" class="h-24 w-24 rounded-full object-cover bg-neutral-dark-800">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            {%if user_data['custom_image'] == '1'%}
+                            <input type="file" id="profile-picture-upload" name="profile_picture" class="hidden" accept="image/*" >
+                            <label for="profile-picture-upload" class="cursor-pointer bg-neutral-dark-800 hover:bg-neutral-dark-700 text-neutral-dark-200 font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <ion-icon name="cloud-upload-outline"></ion-icon> Upload New Picture
+                            </label>
+                            {%endif%}
+                            <!-- ============================== parte pulsabte per scegliere avatar =====================-->
+                            <!-- NUOVO: Pulsante per scegliere un avatar -->
+                            <button type="button" id="choose-avatar-btn" class="bg-brand-purple hover:bg-brand-purple-dark text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <ion-icon name="person-circle-outline"></ion-icon> Choose Avatar
+                            </button>
+                            <!-- ==================================================================-->
+                            <button type="button" id="revert-default-pic-btn" class="bg-neutral-dark-800 hover:bg-neutral-dark-700 text-neutral-dark-300 font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                <ion-icon name="refresh-outline"></ion-icon> Revert to Default
+                            </button>
+                        </div>
+                        
+                    </div>
+                 </div>
+
+                 <!-- Campi del modulo... -->
+                 <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-6">
+                    <h2 class="text-lg font-semibold text-neutral-dark-100">Basic Information</h2>
+                    <p class="text-sm text-neutral-dark-400 mb-6">Update your basic profile information</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div> 
+                            <label for="edit-first-name" class="block text-sm font-medium text-neutral-dark-300 mb-1">First Name <span class="text-red-500 ml-1">*</span></label> 
+                            <input value="{{user_data['name']}}" required type="text" id="edit-first-name" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"> 
+                        </div>
+                        <div> 
+                            <label for="edit-last-name" class="block text-sm font-medium text-neutral-dark-300 mb-1">Last Name <span class="text-red-500 ml-1">*</span></label> 
+                            <input value="{{user_data['surname']}}" required type="text" id="edit-last-name" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"> 
+                        </div>
+                        <div class="md:col-span-2"> 
+                            <label for="edit-username" class="block text-sm font-medium text-neutral-dark-300 mb-1">Username <span class="text-red-500 ml-1">*</span><span id="form-error"  class="text-red-500 ml-1 text-center"></span></label>
+                            <input value="{{user_data['username']}}" required type="text" id="edit-username" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"> 
+                        </div> 
+                        <!-- ====================== nuovo ======================= -->
+                        <!-- NUOVO: SELETTORE PER IL TITOLO -->
+                        <div class="md:col-span-2">
+                            <label for="profile-title-select" class="block text-sm font-medium text-neutral-dark-300 mb-1">Display Title</label>
+                            <select id="profile-title-select" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                                <option value="Beginner" selected>Beginner</option>
+                                <option value="Cultural Explorer">Cultural Explorer</option>
+                                <option value="Helpful Contributor">Helpful Contributor</option>
+                                <option value="Community Leader">Community Leader</option>
+                                <option value="Mission Master">Mission Master</option>
+                            </select>
+                            <p class="text-xs text-neutral-dark-400 mt-1">Choose a title to display based on your unlocked achievements.</p>
+                        </div>
+                        <!-- ============================================= -->
+                        <div class="md:col-span-2"> 
+                            <label for="edit-bio" class="block text-sm font-medium text-neutral-dark-300 mb-1">Bio</label> 
+                            <textarea id="edit-bio" rows="4" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">{{user_data['bio']}}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-dark-950 border border-neutral-dark-800 rounded-xl p-6">
+                    <h2 class="text-lg font-semibold text-neutral-dark-100">Additional Information</h2>
+                    <p class="text-sm text-neutral-dark-400 mb-6">Optional details about yourself</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div> 
+                            <label for="edit-location" class="block text-sm font-medium text-neutral-dark-300 mb-1">Location</label> 
+                            <input value="{{user_data['location']}}" type="text" id="edit-location" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"> 
+                        </div>
+                        <div> 
+                            <label for="edit-website" class="block text-sm font-medium text-neutral-dark-300 mb-1">Website</label> 
+                            <input value="{{user_data['website']}}" type="url" id="edit-website" class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light">
+                        </div>
+                        <div> 
+                            <label for="edit-birthdate" class="block text-sm font-medium text-neutral-dark-300 mb-1">Birthdate (Optional)</label> 
+                            <input value="{{user_data['birthday']}}" type="date" id="edit-birthdate" placeholder="Born..." class="w-full bg-neutral-dark-900 border border-neutral-dark-700 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-purple-light focus:border-brand-purple-light"> 
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="flex justify-end gap-4 pt-6 border-t border-neutral-dark-800">
+                    <button type="button" id="cancel-edit-btn" class="px-6 py-2.5 rounded-lg bg-neutral-dark-800 text-neutral-dark-200 hover:bg-neutral-dark-700 font-semibold transition-colors">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-brand-purple hover:bg-brand-purple-dark text-white font-semibold transition-colors">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- MODAL PER IL CROPPER DELL'IMMAGINE PROFILO -->
+    <div id="cropper-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 cropper-bg">
+        <div class="bg-neutral-dark-900 rounded-xl shadow-lg p-6 w-full max-w-md mx-auto">
+            <h2 class="text-xl font-bold text-white mb-4">Crop your new picture</h2>
+            <div class="cropper-container-modal">
+                <img id="image-to-crop" src="">
+            </div>
+            <div class="flex justify-end gap-4 mt-6">
+                <button type="button" id="cancel-crop-btn" class="px-6 py-2.5 rounded-lg bg-neutral-dark-800 text-neutral-dark-200 hover:bg-neutral-dark-700 font-semibold transition-colors">Cancel</button>
+                <button type="button" id="crop-image-btn" class="px-6 py-2.5 rounded-lg bg-brand-purple hover:bg-brand-purple-dark text-white font-semibold transition-colors">Crop & Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!--  ==================== NUOVO: MODAL PER LA SELEZIONE DELL'AVATAR (AGGIORNATO) ======================= -->
+    <div id="avatar-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 cropper-bg">
+        <div class="bg-neutral-dark-900 rounded-xl shadow-lg p-6 w-full max-w-2xl mx-auto">
+            <h2 class="text-xl font-bold text-white mb-6">Choose Your Avatar</h2>
+            
+            <!-- Griglia dove verranno inseriti gli avatar da JS -->
+            <div id="avatar-selection-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Contenuto generato da JS -->
+            </div>
+            
+            <!-- FOOTER DELLA MODALE AGGIORNATO -->
+            <div class="flex justify-end gap-4 mt-6">
+                <button type="button" id="cancel-avatar-btn" class="px-6 py-2.5 rounded-lg bg-neutral-dark-800 text-neutral-dark-200 hover:bg-neutral-dark-700 font-semibold transition-colors">Cancel</button>
+                <!-- NUOVO: Pulsante di selezione, disabilitato di default -->
+                <button type="button" id="select-avatar-btn" disabled class="px-6 py-2.5 rounded-lg bg-brand-purple hover:bg-brand-purple-dark text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Select
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- =======================================================-->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestione Menu Mobile (dallo script di base)
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+            
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+            }
+            // ================= NUOVO aggiunto ====================
+            const AVAILABLE_AVATARS = [
+                { id: 'bot-1', url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Bandit' },
+                { id: 'bot-2', url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Leo' },
+                { id: 'bot-3', url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Missy' },
+                { id: 'bot-4', url: 'https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Max' },
+                { id: 'pixel-1', url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Milo' },
+                { id: 'pixel-2', url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Midnight' },
+                { id: 'pixel-3', url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Lucy' },
+                { id: 'pixel-4', url: 'https://api.dicebear.com/7.x/pixel-art/svg?seed=Charlie' },
+                { id: 'rings-1', url: 'https://api.dicebear.com/7.x/rings/svg?seed=Loki' },
+                { id: 'rings-2', url: 'https://api.dicebear.com/7.x/rings/svg?seed=Zoe' },
+                { id: 'rings-3', url: 'https://api.dicebear.com/7.x/rings/svg?seed=Sheba' },
+                { id: 'rings-4', url: 'https://api.dicebear.com/7.x/rings/svg?seed=Oreo' }
+            ];
+
+            let tempSelectedAvatarUrl = null; // Stato temporaneo per la modale
+            let selectedAvatarUrl = null; // URL dell'avatar predefinito scelto, da inviare al backend
+            //========================================================
+
+            let croppedImageBase64 = null;
+            let useDefaultImage = false; // Flag per dire "usa immagine di default"
+            // --- URL FOTO PROFILO PREDEFINITA ---
+            const defaultProfilePicUrl = `/images/assets/avatar/default-avatar-circle.jpg`;
+            const initialProfileData = {{ user_data | tojson | safe }};
+            
+            // --- STATO DEL PROFILO ---
+            let profileData = {};
+
+            // --- Elementi del DOM ---
+            const profileView = document.getElementById('profile-view');
+            const editProfileView = document.getElementById('edit-profile-view');
+            
+            // Pulsanti di navigazione
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const backToProfileBtn = document.getElementById('back-to-profile-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const editProfileForm = document.getElementById('edit-profile-form');
+
+            // Gestione foto e CROPPER
+            const profilePicUpload = document.getElementById('profile-picture-upload');
+            const revertDefaultPicBtn = document.getElementById('revert-default-pic-btn');
+            const profilePicEditPreview = document.getElementById('profile-pic-edit-preview');
+            const cropperModal = document.getElementById('cropper-modal');
+            const imageToCrop = document.getElementById('image-to-crop');
+            const cropImageBtn = document.getElementById('crop-image-btn');
+            const cancelCropBtn = document.getElementById('cancel-crop-btn');
+            
+            let cropper = null; // Variabile per contenere l'istanza di Cropper.js
+
+            // =========== NUOVO INIZIO CODICE AGGIUNTO  ===========
+            const avatarModal = document.getElementById('avatar-modal');
+            const chooseAvatarBtn = document.getElementById('choose-avatar-btn');
+            const avatarSelectionGrid = document.getElementById('avatar-selection-grid');
+            const cancelAvatarBtn = document.getElementById('cancel-avatar-btn');
+            const selectAvatarBtn = document.getElementById('select-avatar-btn');
+            // =========== FINE CODICE AGGIUNTO ===========
+
+            // --- Funzioni di Gestione ---
+            
+            function loadInitialDataFromBackend() {
+                profileData = {
+                    firstName: initialProfileData.name || "",
+                    lastName: initialProfileData.surname || "",
+                    username: initialProfileData.username || "",
+                    bio: initialProfileData.bio || "",
+                    location: initialProfileData.location || "",
+                    website: initialProfileData.website || "",
+                    birthdate: initialProfileData.birthday || "",
+                    profilePicUrl: initialProfileData.avatar || defaultProfilePicUrl,
+                    // =========== NUOVA LOGICA TITOLO  ===========
+                    profileTitle: initialProfileData.profile_title || 'Beginner',
+                };
+
+                // Popola anche i campi input del DOM (se vuoi)
+                document.getElementById('first-name').value = profileData.firstName;
+                document.getElementById('last-name').value = profileData.lastName;
+                document.getElementById('username').value = profileData.username;
+                document.getElementById('bio').value = profileData.bio;
+                document.getElementById('location').value = profileData.location;
+                document.getElementById('website').value = profileData.website;
+                document.getElementById('birthdate').value = profileData.birthdate;
+                document.getElementById('profile-pic-edit-preview').src = profileData.profilePicUrl;
+                // ===========  NUOVA LOGICA TITOLO  ===========
+                document.getElementById('profile-title-select').value = profileData.profileTitle;
+
+                console.log("Dati caricati dal backend:", profileData);
+            }
+            
+            // Aggiorna la VISTA DEL PROFILO leggendo da `profileData`
+            
+            function updateProfileDisplay() {
+                document.getElementById('profile-name-display').innerText = `${profileData.firstName} ${profileData.lastName}`;
+                document.getElementById('profile-username-display').innerText = `@${profileData.username}`;
+                document.getElementById('profile-pic-display').src = profileData.profilePicUrl;
+                
+                const bioDisplay = document.getElementById('profile-bio-display');
+                bioDisplay.innerText = profileData.bio;
+                bioDisplay.style.display = profileData.bio ? 'block' : 'none';
+
+                // =========== LOGICA TITOLO NUOVAAA ===========
+                const titleContainer = document.getElementById('profile-title-display');
+                if (profileData.profileTitle) {
+                    titleContainer.style.display = 'block';
+                    document.getElementById('profile-title-text').innerText = profileData.profileTitle;
+                } else {
+                    titleContainer.style.display = 'none';
+                }
+
+                const locationContainer = document.getElementById('profile-location-display');
+                if (profileData.location) {
+                    locationContainer.style.display = 'flex';
+                    locationContainer.querySelector('span').innerText = profileData.location;
+                } else { 
+                    locationContainer.style.display = 'none';
+                }
+
+                const birthdateContainer = document.getElementById('profile-birthdate-display');
+                if (profileData.birthdate) {
+                    birthdateContainer.style.display = 'flex';
+                    birthdateContainer.querySelector('span').innerText = `Born ${profileData.birthdate}`;
+                } else {
+                    birthdateContainer.style.display = 'none';
+                }
+
+                const websiteContainer = document.getElementById('profile-website-display');
+                if (profileData.website) {
+                    websiteContainer.style.display = 'flex';
+                    const websiteLink = websiteContainer.querySelector('a');
+                    // Assicuriamoci che l'URL sia valido per il link
+                    let href = profileData.website;
+                    if (!/^(https?:\/\/)/i.test(href)) {
+                        href = 'https://' + href;
+                    }
+                    websiteLink.href = href;
+                    // Mostriamo una versione pulita del link
+                    websiteLink.innerText = profileData.website.replace(/^(https?:\/\/)/, '');
+                } else {
+                    websiteContainer.style.display = 'none';
+                }
+            }
+            function showError(message) {
+                console.log("Mostro errore:", message)
+                const errorElement = document.getElementById('form-error');
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+
+            // Popola il MODULO DI MODIFICA leggendo da `profileData`
+            function populateEditForm() {
+                document.getElementById('edit-first-name').value = profileData.firstName;
+                document.getElementById('edit-last-name').value = profileData.lastName;
+                document.getElementById('edit-username').value = profileData.username;
+                document.getElementById('edit-bio').value = profileData.bio;
+                document.getElementById('edit-location').value = profileData.location;
+                document.getElementById('edit-website').value = profileData.website;
+                document.getElementById('edit-birthdate').value = profileData.birthdate;
+                document.getElementById('profile-pic-edit-preview').src = profileData.profilePicUrl;
+                // --- LOGICA TITOLO NUOVA ---
+                document.getElementById('profile-title-select').value = profileData.profileTitle;
+            }
+
+            // Funzioni per mostrare/nascondere le viste
+            function showProfileView() {
+                profileView.classList.remove('hidden');
+                editProfileView.classList.add('hidden');
+            }
+
+            function showEditProfileView() {
+                // Prima di mostrare il form, assicuriamoci che sia sincronizzato con lo stato attuale
+                populateEditForm();
+                profileView.classList.add('hidden');
+                editProfileView.classList.remove('hidden');
+            }
+
+            function dataURLtoBlob(dataurl) {
+                var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                while(n--){
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {type:mime});
+            }
+
+            // Salva le modifiche dal form nello stato `profileData`
+            function saveProfileChanges() {
+                const formData = new FormData();
+
+                // Campi testuali
+                formData.append('first_name', document.getElementById('edit-first-name').value.trim());
+                formData.append('last_name', document.getElementById('edit-last-name').value.trim());
+                formData.append('username', document.getElementById('edit-username').value.trim());
+                formData.append('bio', document.getElementById('edit-bio').value.trim());
+                formData.append('location', document.getElementById('edit-location').value.trim());
+                formData.append('website', document.getElementById('edit-website').value.trim());
+                formData.append('birthdate', document.getElementById('edit-birthdate').value.trim());
+
+                // --- LOGICA TITOLO NUOVA ---
+                formData.append('profile_title', document.getElementById('profile-title-select').value);
+
+                const username = document.getElementById('edit-username').value.trim();
+
+                console.log('Username:', username);
+
+                if (useDefaultImage) {
+                    // Invia un flag al backend per indicare "usa immagine di default"
+                    formData.append('reset_profile_picture', '1');
+                } else if (croppedImageBase64) {
+                    // Invia l'immagine croppata
+                    const blob = dataURLtoBlob(croppedImageBase64);
+                    console.log('Nome file da inviare:', `${username}.jpg`);
+                    formData.append('profile_picture', blob, `${username}.jpg`);
+                // --- NUOVO INIZIO CODICE AGGIUNTO (Logica Invio Avatar Scelto) ---
+                } else if (selectedAvatarUrl) {
+                    // Se l'utente ha scelto un avatar predefinito, invia l'URL al backend.
+                    // Il backend dovrà gestire questo URL (salvarlo, ecc.).
+                    formData.append('selected_avatar_url', selectedAvatarUrl);
+                }
+                // --- FINE CODICE AGGIUNTO ---
+                
+                // Invia i dati all'API
+                fetch('/edit_profile', {
+                    method: 'POST',
+                    body: formData,
+                }).then(async response => {
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        // Mostra l’errore nella pagina
+                        showError(data.detail || "Errore generico durante il salvataggio");
+                        return;
+                    }
+
+                    // ✅ Successo: ricarica la pagina
+                    window.location.reload();
+                }).catch(error => {
+                    // Errore di rete o altro
+                    showError(error.message || "Errore di rete");
+                });
+            }
+
+            // --- NUOVO INIZIO CODICE AGGIUNTO (Logica Modale Avatar) ---
+            function populateAvatarModal() {
+                avatarSelectionGrid.innerHTML = ''; 
+                AVAILABLE_AVATARS.forEach(avatar => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'avatar-selectable transition-all duration-200 border-2 border-transparent rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-brand-purple';
+                    const img = document.createElement('img');
+                    img.src = avatar.url;
+                    img.alt = `Avatar ${avatar.id}`;
+                    img.className = 'w-full h-full rounded-full object-cover bg-neutral-dark-800 pointer-events-none';
+                    button.appendChild(img);
+                    
+                    button.addEventListener('click', () => {
+                        tempSelectedAvatarUrl = avatar.url;
+                        avatarSelectionGrid.querySelectorAll('.avatar-selected').forEach(el => el.classList.remove('avatar-selected'));
+                        button.classList.add('avatar-selected');
+                        selectAvatarBtn.disabled = false;
+                    });
+                    
+                    avatarSelectionGrid.appendChild(button);
+                });
+            }
+
+            function closeAndResetAvatarModal() {
+                avatarModal.classList.add('hidden');
+                tempSelectedAvatarUrl = null; 
+                selectAvatarBtn.disabled = true;
+                const currentSelection = avatarSelectionGrid.querySelector('.avatar-selected');
+                if (currentSelection) {
+                    currentSelection.classList.remove('avatar-selected');
+                }
+            }
+            // --- FINE CODICE AGGIUNTO ---
+
+
+            // --- Event Listeners ---
+            
+            // Navigazione
+            editProfileBtn.addEventListener('click', showEditProfileView);
+            backToProfileBtn.addEventListener('click', showProfileView);
+
+            cancelEditBtn.addEventListener('click', () => {
+                showProfileView();
+            });
+
+            // Salvataggio
+            editProfileForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Impedisce il ricaricamento della pagina
+                saveProfileChanges();
+            });
+
+            // --- NUOVO NIZIO CODICE AGGIUNTO (Event Listeners Modale Avatar) ---
+            chooseAvatarBtn.addEventListener('click', () => { avatarModal.classList.remove('hidden'); });
+            cancelAvatarBtn.addEventListener('click', closeAndResetAvatarModal);
+            selectAvatarBtn.addEventListener('click', () => {
+                if (tempSelectedAvatarUrl) {
+                    profilePicEditPreview.src = tempSelectedAvatarUrl;
+                    selectedAvatarUrl = tempSelectedAvatarUrl; // Salva l'URL scelto per l'invio
+                    // Resetta gli altri stati dell'immagine per evitare conflitti
+                    croppedImageBase64 = null;
+                    useDefaultImage = false;
+                }
+                closeAndResetAvatarModal();
+            });
+            // --- FINE CODICE AGGIUNTO ---
+
+
+
+            // --- LOGICA DEL CROPPER ---
+            // 1. Quando l'utente seleziona un file
+            if (profilePicUpload) {
+                profilePicUpload.addEventListener('change', event => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            imageToCrop.src = e.target.result;
+                            cropperModal.classList.remove('hidden');
+                            cropper = new Cropper(imageToCrop, {
+                                aspectRatio: 1 / 1, viewMode: 1, dragMode: 'move',
+                                guides: false, center: false, background: false,
+                                cropBoxMovable: true, cropBoxResizable: true,
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    event.target.value = '';
+                });
+            }
+            
+            // 2. Quando l'utente clicca su "Crop & Save" nel modal
+            cropImageBtn.addEventListener('click', () => {
+                if (cropper) {
+                    const croppedImageUrl = cropper.getCroppedCanvas({ width: 256, height: 256 }).toDataURL('image/jpeg');
+                    profilePicEditPreview.src = croppedImageUrl;
+                    
+                    croppedImageBase64 = croppedImageUrl;
+                    useDefaultImage = false;
+                    selectedAvatarUrl = null;
+                    
+                    cropperModal.classList.add('hidden');
+                    cropper.destroy();
+                    cropper = null;
+                }
+            });
+
+            // 3. Quando l'utente clicca su "Cancel" nel modal del cropper
+            cancelCropBtn.addEventListener('click', () => {
+                cropperModal.classList.add('hidden');
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
+            });
+
+            // 4. Pulsante per tornare all'immagine di default
+            revertDefaultPicBtn.addEventListener('click', () => {
+                profilePicEditPreview.src = defaultProfilePicUrl;
+                croppedImageBase64 = null;
+                selectedAvatarUrl = null;
+                useDefaultImage = true;
+            });
+            
+            
+            // Gestione schede 
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                    document.getElementById(button.dataset.tab).classList.remove('hidden');
+                    tabButtons.forEach(btn => btn.classList.replace('tab-active', 'tab-inactive'));
+                    button.classList.replace('tab-inactive', 'tab-active');
+                });
+            });
+
+            // --- Inizializzazione ---
+            loadInitialDataFromBackend();
+            updateProfileDisplay(); 
+
+            // --- INIZIO CODICE AGGIUNTO (Inizializzazione Modale) ---
+            populateAvatarModal();
+            // --- FINE CODICE AGGIUNTO ---
+
+        });
+    </script>
+</body>
+</html>
