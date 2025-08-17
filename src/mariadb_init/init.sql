@@ -17,12 +17,25 @@ insert into theme(name) values ("Cibo"),("Musica"),("Cinema"),("Moda"),("Calcio"
 
 create table if not exists avatar(
     avatar_id int AUTO_INCREMENT primary key,
-    path text not null
+    path text not null,
+    is_avatar int not null default 0
 );
 
 insert into avatar(path) values(
-    "/images/assets/avatar/default-avatar-circle.jpg"
-);
+    "/images/assets/avatar/default-avatar-circle.jpg");
+    insert into avatar(path, is_avatar) values
+    ("https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Bandit", 1),
+    ("https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Leo", 1),
+    ("https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Missy", 1),
+    ("https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Max", 1),
+    ("https://api.dicebear.com/7.x/pixel-art/svg?seed=Milo", 1),
+    ("https://api.dicebear.com/7.x/pixel-art/svg?seed=Midnight", 1),
+    ("https://api.dicebear.com/7.x/pixel-art/svg?seed=Lucy", 1),
+    ("https://api.dicebear.com/7.x/pixel-art/svg?seed=Charlie", 1),
+    ("https://api.dicebear.com/7.x/rings/svg?seed=Loki", 1),
+    ("https://api.dicebear.com/7.x/rings/svg?seed=Zoe", 1),
+    ("https://api.dicebear.com/7.x/rings/svg?seed=Sheba", 1),
+    ("https://api.dicebear.com/7.x/rings/svg?seed=Oreo", 1);
 
 create table if not exists title(
     title_id int AUTO_INCREMENT primary key,
@@ -83,7 +96,7 @@ create table if not exists mission(
     reward_coins int not null,
     reward_points int not null,
     reward_badge int default null,
-    reward_title text default null,
+    reward_title int default null,
     value int not null,
     foreign key(theme) references theme(theme_id) on delete cascade on update cascade
 );
