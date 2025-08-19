@@ -6,7 +6,7 @@ from utils.game_operation import update_points
 
 
 async def chiudi_domande_scadute(connection: aiomysql.Connection):
-    """Metodo per cambiare stato delle domande"""
+    """Metodo per cambiare stato delle domande e assegnare punti agli utenti"""
 
 
     print("chiudi_domande_scadute")
@@ -47,7 +47,7 @@ async def chiudi_domande_scadute(connection: aiomysql.Connection):
 
 
 async def chiudi_missioni_scadute(connection: aiomysql.Connection):
-    """Metodo per controllare le missioni scadute"""
+    """Metodo per controllare le missioni scadute e resettarle"""
     
 
     print("chiudi_missioni_scadute")
