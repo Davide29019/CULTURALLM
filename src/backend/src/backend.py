@@ -411,7 +411,7 @@ async def report(report_json: ReportInput, request: Request) -> BooleanResponse:
         
 @app.post("/remove_report", dependencies=[Depends(set_user_id)])
 async def report(report_json: ReportInput, request: Request) -> BooleanResponse:
-    """API per l'inserimento di un report"""
+    """API per la rimozione di un report"""
 
 
     request.session["last_active"] = time.time()
