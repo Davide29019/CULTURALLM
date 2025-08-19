@@ -676,7 +676,8 @@ async def send_llm_answer(request: Request, llm: str = Form(...), question_id: s
 
 @app.post("/report")
 async def report(request: Request, question_id: str = Form(...)):
-
+    """API per l'inserimento del report da parte dell'utente"""
+    
 
     if "user_id" not in request.session:
         return RedirectResponse(url="/signin", status_code=303)
@@ -695,7 +696,7 @@ async def report(request: Request, question_id: str = Form(...)):
 
 @app.post("/remove_report")
 async def send_report(request: Request, question_id: str = Form(...)):
-
+    """API per la rimozione del report"""
 
     if "user_id" not in request.session:
         return RedirectResponse(url="/signin", status_code=303)
@@ -1031,7 +1032,7 @@ async def change_password(request: Request, current_password: str = Form(...), n
 
 @app.post("/change_phone")
 async def change_phone(request: Request, phone_number: str = Form(...)):
-    """API per il cambio password"""
+    """API per il cambio numero di telefono"""
 
 
     if "user_id" not in request.session:
