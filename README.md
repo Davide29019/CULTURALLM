@@ -21,6 +21,7 @@ CULTURALLM is an interactive platform where users can play by answering question
 To run the project using Docker Compose:
 ```bash
 docker-compose up --build
+```
 
 ## Authors
 - Simone Tannino
