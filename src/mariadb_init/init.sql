@@ -42,7 +42,21 @@ create table if not exists title(
     name varchar(255) not null unique
 );
 
-insert into title(name) values("Beginner");
+insert into title(name) values 
+("Beginner"),
+("Curious Mind"),
+("Cultural Explorer"),
+("Global Sage"),
+("Good Samaritan"),
+("Helpful Contributor"),
+("Community Pillar"),
+("Community Leader"),
+("Elite Member"),
+("Top Champion"),
+("Mission Starter"),
+("Mission Master"),
+("Quest Legend");
+
 
 
 create table if not exists user(
@@ -80,11 +94,23 @@ create table if not exists badge(
     path text not null
 );
 
-insert into badge(title, description, tier, path) values ("Cultural Explorer", "Asked 100+ questions", 'silver', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center"><ion-icon name="earth-outline" class="text-2xl text-blue-400"></ion-icon></div>'),
+insert into badge(title, description, tier, path) values 
+-- Cultural Explorer (Icona: Terra) - Per chi fa domande
+("Curious Mind", "Asked 10+ questions", 'bronze', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center"><ion-icon name="earth-outline" class="text-2xl text-blue-400"></ion-icon></div>'),
+("Cultural Explorer", "Asked 100+ questions", 'silver', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center"><ion-icon name="earth-outline" class="text-2xl text-blue-400"></ion-icon></div>'),
+("Global Sage", "Asked 500+ questions", 'gold', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center"><ion-icon name="earth-outline" class="text-2xl text-blue-400"></ion-icon></div>'),
+-- Helpful Contributor (Icona: Scintille) - Per chi dà risposte utili
+("Good Samaritan", "10+ helpful answers", 'bronze', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center"><ion-icon name="sparkles-outline" class="text-2xl text-green-400"></ion-icon></div>'),
 ("Helpful Contributor", "50+ helpful answers", 'silver', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center"><ion-icon name="sparkles-outline" class="text-2xl text-green-400"></ion-icon></div>'),
+("Community Pillar", "200+ helpful answers", 'gold', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-green-500/20 flex items-center justify-center"><ion-icon name="sparkles-outline" class="text-2xl text-green-400"></ion-icon></div>'),
+-- Community Leader (Icona: Persone) - Per la classifica
 ("Community Leader", "Make it to the top 100", 'bronze', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center"><ion-icon name="people-outline" class="text-2xl text-purple-400"></ion-icon></div>'),
-("Mission Master", "Completed 20 missions",'bronze',  '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-orange-500/20 flex items-center justify-center"><ion-icon name="ribbon-outline" class="text-2xl text-orange-400"></ion-icon></div>');
-
+("Elite Member", "Make it to the top 50", 'silver', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center"><ion-icon name="people-outline" class="text-2xl text-purple-400"></ion-icon></div>'),
+("Top Champion", "Make it to the top 10", 'gold', '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-purple-500/20 flex items-center justify-center"><ion-icon name="people-outline" class="text-2xl text-purple-400"></ion-icon></div>'),
+-- Mission Master (Icona: Nastro) - Per le missioni completate
+("Mission Starter", "Completed 5 missions", 'bronze',  '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-orange-500/20 flex items-center justify-center"><ion-icon name="ribbon-outline" class="text-2xl text-orange-400"></ion-icon></div>'),
+("Mission Master", "Completed 20 missions", 'silver',  '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-orange-500/20 flex items-center justify-center"><ion-icon name="ribbon-outline" class="text-2xl text-orange-400"></ion-icon></div>'),
+("Quest Legend", "Completed 50 missions", 'gold',  '<div class="flex-shrink-0 h-12 w-12 rounded-full bg-orange-500/20 flex items-center justify-center"><ion-icon name="ribbon-outline" class="text-2xl text-orange-400"></ion-icon></div>');
 
 
 create table if not exists mission(
@@ -97,8 +123,10 @@ create table if not exists mission(
     reward_points int not null,
     reward_badge int default null,
     reward_title int default null,
-    value int not null,
-    foreign key(theme) references theme(theme_id) on delete cascade on update cascade
+    value int not null, -- appresenta l'obiettivo numerico che un utente deve raggiungere per completare una missione.-- 
+    foreign key(theme) references theme(theme_id) on delete cascade on update cascade,
+    foreign key(reward_badge) references badge(badge_id) on delete set null on update cascade,
+    foreign key(reward_title) references title(title_id) on delete set null on update cascade;
 );
 
 
@@ -174,6 +202,32 @@ INSERT INTO mission (type, kind, theme, description, reward_points, reward_coins
 ('objective', 'ranking', null, 'Classifica 1000 risposte su qualsiasi tema', 1000, 500, 1000),
 ('objective', 'mission', null, 'Completa 100 missioni su qualsiasi tema', 200, 100, 100),
 ('objective', 'llm', null, 'Fai generare all''LLM 1000 domande su qualsiasi tema', 1000, 500, 1000);
+
+
+-- Domande fatte (badge legati alle missioni)
+insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
+('objective', 'question', 'Fai 10 domande', 50, 25, 1, 1, 10),
+('objective', 'question', 'Fai 100 domande', 200, 100, 2, 2, 100),
+('objective', 'question', 'Fai 500 domande', 500, 250, 3, 3, 500);
+
+-- Risposte utili (Helpful Contributor)
+insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
+('objective', 'answer', 'Dai 10 risposte utili', 50, 25, 4, 4, 10),
+('objective', 'answer', 'Dai 50 risposte utili', 200, 100, 5, 5, 50),
+('objective', 'answer', 'Dai 200 risposte utili', 500, 250, 6, 6, 200);
+
+-- Ranking / Leaderboard
+insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
+('objective', 'ranking', 'Entra nella top 100', 100, 50, 7, 7, 100),
+('objective', 'ranking', 'Entra nella top 50', 250, 125, 8, 8, 50),
+('objective', 'ranking', 'Entra nella top 10', 500, 250, 9, 9, 10);
+
+-- Missioni completate
+insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
+('objective', 'mission', 'Completa 5 missioni', 50, 25, 10, 10, 5),
+('objective', 'mission', 'Completa 20 missioni', 200, 100, 11, 11, 20),
+('objective', 'mission', 'Completa 50 missioni', 500, 250, 12, 12, 50);
+
 
 
 
