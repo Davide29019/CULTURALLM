@@ -206,27 +206,27 @@ INSERT INTO mission (type, kind, theme, description, reward_points, reward_coins
 
 -- Domande fatte (badge legati alle missioni)
 insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
-('objective', 'question', 'Fai 10 domande', 50, 25, 1, 1, 10),
-('objective', 'question', 'Fai 100 domande', 200, 100, 2, 2, 100),
-('objective', 'question', 'Fai 500 domande', 500, 250, 3, 3, 500);
+('objective', 'question', 'Fai 10 domande', 50, 25, 1, 2, 10),
+('objective', 'question', 'Fai 100 domande', 200, 100, 2, 3, 100),
+('objective', 'question', 'Fai 500 domande', 500, 250, 3, 4, 500);
 
 -- Risposte utili (Helpful Contributor)
 insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
-('objective', 'answer', 'Dai 10 risposte utili', 50, 25, 4, 4, 10),
-('objective', 'answer', 'Dai 50 risposte utili', 200, 100, 5, 5, 50),
-('objective', 'answer', 'Dai 200 risposte utili', 500, 250, 6, 6, 200);
+('objective', 'answer', 'Dai 10 risposte utili', 50, 25, 4, 5, 10),
+('objective', 'answer', 'Dai 50 risposte utili', 200, 100, 5, 6, 50),
+('objective', 'answer', 'Dai 200 risposte utili', 500, 250, 6, 7, 200);
 
 -- Ranking / Leaderboard
 insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
-('objective', 'ranking', 'Entra nella top 100', 100, 50, 7, 7, 100),
-('objective', 'ranking', 'Entra nella top 50', 250, 125, 8, 8, 50),
-('objective', 'ranking', 'Entra nella top 10', 500, 250, 9, 9, 10);
+('objective', 'ranking', 'Entra nella top 100', 100, 50, 7, 8, 100),
+('objective', 'ranking', 'Entra nella top 50', 250, 125, 8, 9, 50),
+('objective', 'ranking', 'Entra nella top 10', 500, 250, 9, 10, 10);
 
 -- Missioni completate
 insert into mission(type, kind, description, reward_coins, reward_points, reward_badge, reward_title, value) values
-('objective', 'mission', 'Completa 5 missioni', 50, 25, 10, 10, 5),
-('objective', 'mission', 'Completa 20 missioni', 200, 100, 11, 11, 20),
-('objective', 'mission', 'Completa 50 missioni', 500, 250, 12, 12, 50);
+('objective', 'mission', 'Completa 5 missioni', 50, 25, 10, 11, 5),
+('objective', 'mission', 'Completa 20 missioni', 200, 100, 11, 12, 20),
+('objective', 'mission', 'Completa 50 missioni', 500, 250, 12, 13, 50);
 
 
 
