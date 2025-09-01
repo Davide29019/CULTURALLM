@@ -126,7 +126,7 @@ create table if not exists mission(
     value int not null, -- appresenta l'obiettivo numerico che un utente deve raggiungere per completare una missione.-- 
     foreign key(theme) references theme(theme_id) on delete cascade on update cascade,
     foreign key(reward_badge) references badge(badge_id) on delete set null on update cascade,
-    foreign key(reward_title) references title(title_id) on delete set null on update cascade;
+    foreign key(reward_title) references title(title_id) on delete set null on update cascade
 );
 
 
