@@ -64,8 +64,9 @@ async def check_missions(connection: aiomysql.Connection, item: str, user_id: in
     mission_to_update_query = f"select m.mission_id from mission m, mission_user mu where m.mission_id = mu.mission_id and mu.user_id = {user_id} and mu.completed = 0 and m.kind = '{item}' and theme is null"
     mission_to_update_no_theme = await execute_select(connection, mission_to_update_query)
 
-    mission_to_update_theme_query = f"select m.mission_id from mission m, mission_user mu where m.mission_id = mu.mission_id and mu.user_id = {user_id} and mu.completed = 0 and m.kind = '{item}' and m.mission_id in (select mission_id from mission where theme is not null) {f'and theme = {theme}' * (theme is not None)}"
-    mission_to_update_theme = await execute_select(connection, mission_to_update_theme_query)
+    if theme is not None:
+        mission_to_update_theme_query = f"select m.mission_id from mission m, mission_user mu where m.mission_id = mu.mission_id and mu.user_id = {user_id} and mu.completed = 0 and m.kind = '{item}' and m.mission_id in (select mission_id from mission where theme is not null) and theme = {theme}"
+        mission_to_update_theme = await execute_select(connection, mission_to_update_theme_query)
 
     mission_to_update = mission_to_update_no_theme + mission_to_update_theme
     print(mission_to_update)
