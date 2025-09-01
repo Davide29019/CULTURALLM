@@ -5,6 +5,7 @@ from utils.various_tools import get_specific_from_something
 from utils.query_execute import execute_modify, execute_select
 from utils.sign_in import get_pass_and_salt, check_password
 from utils.sign_up import hash_password
+from utils.game_operation import check_missions
 
 
 async def check_edit_profile(username: str, user_id: int, connection: aiomysql.Connection) -> bool:
@@ -65,3 +66,17 @@ async def edit_password(connection: aiomysql.Connection, new_password: str, user
     update_password = "update user set password = %s, salt = %s where user_id = %s"
     await execute_modify(connection, update_password, (result[1], result[0], user_id))
 
+async def check_first_edit(connection: aiomysql.Connection, user_id: int) -> None:
+    """Metodo per controllare se l'utente sta inserendo dati per la prima volta"""
+
+    query = f"select name from user where user_id = {user_id}"
+
+    result = await execute_select(connection, query)
+
+    if result[0][0] == None:
+        print("PRIMA MODIFICA")
+        await check_missions(connection, "user", user_id)
+        return
+    else:
+        print("ACCOUNT GIA MODIFICATO")
+        return 
