@@ -27,7 +27,7 @@ from utils.get_info import get_missions, get_user_stats, get_last_user_activitie
 from utils.game_operation import insert_answer, ask_llm_answer, update_points, check_missions
 from utils.connection import Connection
 from utils.daily_check import chiudi_domande_scadute, chiudi_missioni_scadute
-from utils.edit_profile import check_edit_profile, set_image, check_current_pass, edit_password
+from utils.edit_profile import check_edit_profile, set_image, check_current_pass, edit_password, check_first_edit
 
 
 
@@ -544,6 +544,7 @@ async def edit_profile(request: Request, profile_json: ProfileUpdateInput) -> Bo
         if await check_edit_profile(profile_json.username, user_id, connection):
             return BooleanResponse(status = False, warning = "Username already in use!")
         user_id = request.session.get("user_id")
+        await check_first_edit(connection, user_id)
         values_text  = "username = %s, name = %s, surname = %s, current_title_id = %s"
         values_tuple = (profile_json.username, profile_json.name, profile_json.surname, int(profile_json.new_title),)
         if profile_json.bio != "":
