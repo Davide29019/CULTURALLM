@@ -273,7 +273,9 @@ async def question(question_json: QuestionInput, request: Request) -> CreateQues
                     id = await get_specific_from_something(connection, "llm", "llm_id", "name=%s", (question_json.llm,))
                     id = int(id[0][0]) 
                     print(f"LLM ID = {id}")
-                    question = result["question_generated"]
+                    question:str = result["question_generated"]
+                    if question.find("Question Generated: ") != -1:
+                        question = question.replace("Question Generated: ","")
                     question_id = await insert_question(connection, "question_text, created_by_llm_id", (question, id,))
 
                     points = 10
