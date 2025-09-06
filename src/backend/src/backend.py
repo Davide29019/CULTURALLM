@@ -255,6 +255,9 @@ async def question(question_json: QuestionInput, request: Request) -> CreateQues
                     print("punti assegnati!!!")
                     await check_missions(connection, "question", request.session.get("user_id"), question_json.theme)
                     print("missioni aggiornate!!!")
+                    id = await get_specific_from_something(connection, "llm", "llm_id", "name=%s", (question_json.answering_llm,))
+                    id = int(id[0][0]) 
+                    print(f"LLM ID = {id}")
                 else:
                     
                     theme = await get_specific_from_something(connection, "theme", "name", f"theme_id = {question_json.theme}")
@@ -269,6 +272,7 @@ async def question(question_json: QuestionInput, request: Request) -> CreateQues
                     print(result)   
                     id = await get_specific_from_something(connection, "llm", "llm_id", "name=%s", (question_json.llm,))
                     id = int(id[0][0]) 
+                    print(f"LLM ID = {id}")
                     question = result["question_generated"]
                     question_id = await insert_question(connection, "question_text, created_by_llm_id", (question, id,))
 
@@ -411,7 +415,7 @@ async def report(report_json: ReportInput, request: Request) -> BooleanResponse:
         
 @app.post("/remove_report", dependencies=[Depends(set_user_id)])
 async def report(report_json: ReportInput, request: Request) -> BooleanResponse:
-    """API per la rimozione di un report"""
+    """API per l'inserimento di un report"""
 
 
     request.session["last_active"] = time.time()
